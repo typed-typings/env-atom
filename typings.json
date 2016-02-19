@@ -1,0 +1,4 @@
+{
+  "name": "atom",
+  "main": "lib/atom.d.ts"
+}
