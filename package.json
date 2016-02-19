@@ -1,5 +1,5 @@
 {
-  "name": "npm-atom",
+  "name": "env-atom",
   "version": "0.0.1",
   "description": "The type definition for https://github.com/atom/atom",
   "directories": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unional/npm-atom.git"
+    "url": "git+https://github.com/typed-typings/env-atom.git"
   },
   "keywords": [
     "typings",
@@ -22,7 +22,7 @@
   "author": "unional",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/unional/npm-atom/issues"
+    "url": "https://github.com/typed-typings/env-atom/issues"
   },
-  "homepage": "https://github.com/unional/npm-atom#readme"
+  "homepage": "https://github.com/typed-typings/env-atom#readme"
 }
