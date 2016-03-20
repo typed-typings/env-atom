@@ -31,6 +31,6 @@
   "homepage": "https://github.com/typed-typings/env-atom#readme",
   "scripts": {
     "build": "typings bundle -A -o test",
-    "test": "ts-node -n test/test.ts"
+    "test": "ts-node -P test test/test.ts"
   }
 }
