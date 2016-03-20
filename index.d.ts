@@ -500,7 +500,7 @@ declare namespace atom {
        * Will be removed in 2.0
        */
       getRepositories(): GitRepository[];
-      repositoryForDirectory(directory: Directory): PromiseLike<Repository>;
+      repositoryForDirectory(directory: Directory): PromiseLike<GitRepository>; // Was Repository. Likely API mistake.
       getPaths(): string[];
       setPaths(projectPaths: string[]): void;
       addPath(projectPath: string): void;
@@ -544,6 +544,7 @@ declare namespace atom {
 
     }
 
+    // NOT FOUND
     export interface Repository { }
 
     export interface SetRangeOption {
