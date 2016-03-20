@@ -1,8 +1,3 @@
 {
-  "rules": {
-    "align": [
-      true,
-      "arguments"
-    ]
-  }
+  "extends": "typings"
 }
