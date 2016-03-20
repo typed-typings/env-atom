@@ -1,4 +1,12 @@
 {
   "name": "atom",
-  "main": "lib/atom.d.ts"
+  "main": "index.d.ts",
+  "ambient": true,
+  "homepage": "https://github.com/atom/atom",
+  "devDependencies": {
+    "blue-tape": "registry:npm/blue-tape#0.1.0+20160211003958"
+  },
+  "ambientDevDependencies": {
+    "node": "registry:dt/node#4.0.0+20160319033040"
+  }
 }

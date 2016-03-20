@@ -39,6 +39,8 @@ node_modules
 
 # typings
 typings
+test/browser.d.ts
+test/main.d.ts
 
 # output folder
 out

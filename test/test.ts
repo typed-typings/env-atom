@@ -1,10 +1,7 @@
-/// <reference path="../lib/atom.d.ts" />
-
+import test = require('blue-tape');
 import a = require('atom');
-import * as b from 'atom';
 
-atom.commands;
-
-a.commands;
-
-b.commands;
+test('global atom', (t) => {
+  t.plan(1);
+  t.assert(atom.workspace);
+});

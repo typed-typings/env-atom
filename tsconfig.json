@@ -3,13 +3,10 @@
     "module": "commonjs",
     "moduleResolution": "node"
   },
-  "files": [
-    "lib/atom.d.ts",
-    "lib/AtomEnvironment.d.ts",
-    "lib/Color.d.ts",
-    "lib/CommandRegistry.d.ts",
-    "lib/Disposable.d.ts",
-    "lib/EventCallback.d.ts",
-    "typings/main.d.ts"
+  "exclude": [
+    "node_modules",
+    "test",
+    "typings/browser",
+    "typings/browser.d.ts"
   ]
 }
