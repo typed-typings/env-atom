@@ -17,7 +17,78 @@ declare namespace atom {
       deserializers: DeserializerManager;
       views: ViewRegistry;
       workspace: Workspace;
+      // Extended Methods
+      onDidBeep(callback: () => void): Disposable;
+      onWillThrowError(callback: (event: {
+        originalError: Object;
+        message: string;
+        url: string;
+        line: number;
+        column: number;
+        preventDefault(): void;
+      }) => void): Disposable;
+      onDidThrowError(callback: (event: {
+        originalError: Object;
+        message: string;
+        url: string;
+        line: number;
+        column: number;
+      }) => void): Disposable;
+
+      // Atom Details
+      inDevMode(): boolean;
+      inSafeMode(): boolean;
+      inSpecMode(): boolean;
+      getVersion(): string;
+      isReleasedVersion(): boolean;
+      getWindowLoadTime(): number;
+      getLoadSettings(): Object;
+
+      // Managing The Atom Window
+      open(params: {
+        pathsToOpen: string[];
+        newWindow: boolean;
+        devMode: boolean;
+        safeMode: boolean;
+      }): void;
+      close();
+      getSize(): { width: number, height: number };
+      setSize(width: number, height: number): void;
+      getPosition(): { x: number, y: number };
+      setPosition(x: number, y: number): void;
+
+      // Extended Methods
+      pickFolder(callback: (paths: string[]) => void): void;
+      getCurrentWindow(): any;
+      center(): void;
+      focus(): void;
+      show(): void;
+      hide(): void;
+      reload(): void;
+      isMaximized(): boolean;
+      isFullScreen(): boolean;
+      setFullScreen(): void;
+      toggleFullScreen(): void;
+
+      // Messaging The User
+      beep(): void;
+      confirm(options: {
+        message: string;
+        detailedMessage?: string;
+        buttons?: string[] | ButtonBag[]
+      }): number;
+
+      // Managing the Dev Tools
+      // Extended Methods
+      openDevTools(): PromiseLike<void>;
+      toggleDevTools(): PromiseLike<void>;
+      executeJavaScriptInDevTools(): void;
     }
+
+    export interface ButtonBag {
+      [index: string]: Function;
+    }
+
     export class Color {
       public static parse(value: string | Object): Color;
       public toHexString(): string;
@@ -454,6 +525,73 @@ declare namespace atom {
   export var deserializers: Typings.DeserializerManager;
   export var views: Typings.ViewRegistry;
   export var workspace: Typings.Workspace;
+
+  // Extended Methods
+  export function onDidBeep(callback: () => void): Typings.Disposable;
+  export function onWillThrowError(callback: (event: {
+    originalError: Object;
+    message: string;
+    url: string;
+    line: number;
+    column: number;
+    preventDefault(): void;
+  }) => void): Typings.Disposable;
+  export function onDidThrowError(callback: (event: {
+    originalError: Object;
+    message: string;
+    url: string;
+    line: number;
+    column: number;
+  }) => void): Typings.Disposable;
+
+  // Atom Details
+  export function inDevMode(): boolean;
+  export function inSafeMode(): boolean;
+  export function inSpecMode(): boolean;
+  export function getVersion(): string;
+  export function isReleasedVersion(): boolean;
+  export function getWindowLoadTime(): number;
+  export function getLoadSettings(): Object;
+
+  // Managing The Atom Window
+  export function open(params: {
+    pathsToOpen: string[];
+    newWindow: boolean;
+    devMode: boolean;
+    safeMode: boolean;
+  }): void;
+  export function close();
+  export function getSize(): { width: number, height: number };
+  export function setSize(width: number, height: number): void;
+  export function getPosition(): { x: number, y: number };
+  export function setPosition(x: number, y: number): void;
+
+  // Extended Methods
+  export function pickFolder(callback: (paths: string[]) => void): void;
+  export function getCurrentWindow(): any;
+  export function center(): void;
+  export function focus(): void;
+  export function show(): void;
+  export function hide(): void;
+  export function reload(): void;
+  export function isMaximized(): boolean;
+  export function isFullScreen(): boolean;
+  export function setFullScreen(): void;
+  export function toggleFullScreen(): void;
+
+  // Messaging The User
+  export function beep(): void;
+  export function confirm(options: {
+    message: string;
+    detailedMessage?: string;
+    buttons?: string[] | Typings.ButtonBag[]
+  }): number;
+
+  // Managing the Dev Tools
+  // Extended Methods
+  export function openDevTools(): PromiseLike<void>;
+  export function toggleDevTools(): PromiseLike<void>;
+  export function executeJavaScriptInDevTools(): void;
 }
 
 declare module 'atom' {
