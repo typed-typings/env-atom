@@ -145,6 +145,19 @@ declare namespace atom {
       add(itemsBySelector: ContextMenuItem): Disposable;
     }
 
+    export class Decoration {
+      destroy(): void;
+      onDidChangeProperties(callback: (event: {
+        oldProperties: Object;
+        newProperties: Object;
+      }) => void): Disposable;
+      onDidDestroy(callback: () => void): Disposable;
+      getId(): any;
+      getMarker(): any; // Marker;
+      getProperties(): Object;
+      setProperties(newProperties: Object): void;
+    }
+
     export class DeserializerManager {
       add(deserializers: { name: string, deserialize: (serializedState: any, atom: AtomEnvironment) => any }): void;
       deserialize(state: Object): void;
@@ -176,6 +189,14 @@ declare namespace atom {
       static isDisposable(object: Object): boolean;
       constructor(disposalAction: Function);
       dispose(): void;
+    }
+
+    export class Emitter {
+      clear(): void;
+      dispose(): void;
+      on(eventName: string, handler: (value: any) => void): Disposable;
+      preempt(eventName: string, handler: (value: any) => void): Disposable;
+      emit(eventName: string, value: any): void;
     }
 
     export interface EventCallback {
@@ -352,6 +373,14 @@ declare namespace atom {
       target: any; // ELEMNT?
     }
 
+    export class LayerDecoration {
+      destroy(): void;
+      isDestroyed(): boolean;
+      getProperties(): Object;
+      setProperties(newProperties: Object): void;
+      setPropertiesForMarker(marker: TextEditorMarker /* | Marker */, properties: Object): void;
+    }
+
     export interface MenuItem {
       label: string;
       submenu?: MenuItem[];
@@ -439,6 +468,29 @@ declare namespace atom {
       getAvailablePackageMetadata(): string[];
     }
 
+    export class Point {
+      static fromObject(object: Point | number[], copy?: boolean): Point;
+      static min(point1: Point, point2: Point): Point;
+      row: number;
+      column: number;
+      constructor(row: number, column: number);
+      copy(): Point;
+      negate(): Point;
+
+      compare(other: Point): Point;
+      isEqual(other: Point): boolean;
+      isLessThan(other: Point): boolean;
+      isLessThanOrEqual(other: Point): boolean;
+      isGreaterThan(other: Point): boolean;
+      isGreaterThanOrEqual(other: Point): boolean;
+      freeze(): void;
+      translate(other: Point): Point;
+      traverse(other: Point): Point;
+      toArray(): number[];
+      serialize(): number[];
+      toString(): string;
+    }
+
     export class Project {
       // Event Subscription
       onDidChangePaths(callback: (projectPaths: string[]) => void): Disposable;
@@ -458,7 +510,127 @@ declare namespace atom {
       contains(pathToCheck: string): boolean;
     }
 
+    export class Range {
+      start: Point;
+      end: Point;
+      static fromObject(object: Range | Point[], copy?: boolean): Range;
+      constructor(pointA: Point, pointB: Point);
+      copy(): Range;
+      negate(): Range;
+
+      static deserialize(array: any): Range;
+      serialize(): any;
+
+      isEmpty(): boolean;
+      isSingleLine(): boolean;
+      getRowCount(): number;
+      getRows(): number[];
+
+      freeze(): void;
+      union(otherRange: Range): Range;
+      translate(startDelta: Point, endDelta?: Point): Range;
+      traverse(delta: Point): Range;
+
+
+      compare(otherRange: Range): Range;
+      isEqual(otherRange: Range): boolean;
+      coversSameRows(otherRange: Range): boolean;
+      intersectsWith(otherRange: Range, exclusive?: boolean): boolean;
+      containsRange(otherRange: Range, exclusive?: boolean): boolean;
+      containsPoint(point: Point, exclusive?: boolean): boolean;
+      intersectsRow(row: number): boolean;
+      intersectsRowRange(startRow: number, endRow: number): boolean;
+      toString(): string;
+
+    }
+
     export interface Repository { }
+
+    export interface SetRangeOption {
+      preserveFolds: boolean;
+      autoScroll: boolean;
+    }
+    export class Selection {
+      onDidChangeRange(callback: (event: {
+        oldBufferRange: Range;
+        oldScreenRange: Range;
+        newBufferRange: Range;
+        newScreenRange: Range;
+        selection: Selection
+      }) => void): Disposable;
+      onDidDestroy(callback: () => void): Disposable;
+      getScreenRange(): Range;
+      setScreenRange(screenRange: Range, options?: SetRangeOption): void;
+      getbufferRange(): Range;
+      setbufferRange(bufferRange: Range, options?: SetRangeOption): void;
+      getBufferRowRange(): any;
+      isEmpty(): boolean;
+      isReversed(): boolean;
+      isSingleScreenLine(): boolean;
+      getText(): string;
+      intersectsBufferRange(bufferRange: Range): boolean;
+      intersectsWith(otherSelection: Selection): boolean;
+      clear(options?: { autoScroll: boolean }): void;
+      selectToScreenPosition(position: Point): void;
+      selectToBufferPosition(position: Point): void;
+      selectRight(columnCount?: number): void;
+      selectLeft(columnCount?: number): void;
+      selectUp(rowCount?: number): void;
+      selectDown(rowCount?: number): void;
+      selectToTop(): void;
+      selectToBottom(): void;
+      selectAll(): void;
+      selectToBeginningOfLine(): void;
+      selectToFirstCharactorOfLine(): void;
+      selectToEndOfLine(): void;
+      selectToEndOfBufferLine(): void;
+      selectToBeginningOfWord(): void;
+      selectToEndOfWord(): void;
+      selectToBeginningOfNextWord(): void;
+      selectToPreviousWordBoundary(): void;
+      selectToNextWordBoundary(): void;
+      selectToPreviousSubwordBoundary(): void;
+      selectToNextSubwordBoundary(): void;
+      selectToBeginningOfNextParagraph(): void;
+      selectToBeginningOfPreviousParagraph(): void;
+      selectWord(): void;
+      expandOverWord(): void;
+      selectLine(row: number): void;
+      expandOverLine(): void;
+      insertText(text: string, options?: {
+        select: boolean;
+        autoIndent: boolean;
+        autoIndentNewLine: boolean;
+        autoDecreaseIndent: boolean;
+        normalizeLineEndings?: boolean;
+        undo: string
+      }): void;
+      backspace(): void;
+      deleteToPreviousWordBoundary(): void;
+      deleteToNextWordBoundary(): void;
+      deleteToBeginningOfWord(): void;
+      deleteToBeginningOfLine(): void;
+      delete(): void;
+      deleteToEndOfLine(): void;
+      deleteToEndOfWord(): void;
+      deleteToBeginningOfSubword(): void;
+      deleteToEndOfSubword(): void;
+      deleteLine(): void;
+      joinLines(): void;
+      outdentSelectedRows(): void;
+      autoIndentSelectedRows(): void;
+      toggleLineComments(): void;
+      cutToEndOfLine(): void;
+      cutToEndOfBufferLine(): void;
+      cut(maintainClipboard: boolean, fullLine: boolean): void;
+      copy(maintainClipboard: boolean, fullLine: boolean): void;
+      fold(): void;
+      indentSelectedRows(): void;
+      addSelectionBelow(): void;
+      addSelectionAbove(): void;
+      merge(otherSelection: Selection, options?: SetRangeOption): void;
+      compare(otherSelection: Selection): number;
+    }
 
     export class ScopeDescriptor {
       constructor(options?: { scopes: string[] });
@@ -477,6 +649,58 @@ declare namespace atom {
       onDidUpdateSytleElement(callback: (styleElement: StyleElement) => void): Disposable;
       getStyleElements(): StyleElement[];
       getUserStyleSheetPath(): string;
+    }
+
+    export class TextEditorMarker {
+      destroy(): void;
+      copy(properties?: Object): TextEditorMarker;
+      onDidChange(callback: (event: {
+        oldHeadBufferPosition: Point;
+        newHeadBufferPosition: Point;
+        oldTailBufferPosition: Point;
+        newTailBufferPosition: Point;
+        oldHeadScreenPosition: Point;
+        newHeadScreenPosition: Point;
+        oldTailScreenPosition: Point;
+        newTailScreenPosition: Point;
+        wasValid: boolean;
+        isValid: boolean;
+        hadTail: boolean;
+        hasTail: boolean;
+        oldProperties: Object;
+        newProperties: Object;
+        textChanged: boolean;
+      }) => void): Disposable;
+      onDidDestroy(callback: () => void): Disposable;
+      isValid(): boolean;
+      isDestroyed(): boolean;
+      isReversed(): boolean;
+      getInvalidationStrategy(): string;
+      getProperties(): Object;
+      setProperties(properties: Object): void;
+      isEqual(other: TextEditorMarker): boolean;
+      compare(other: TextEditorMarker): number;
+      getBufferRange(): Range;
+      setBufferRange(bufferRange: Range, properties?: { reversed: boolean } ): void;
+      getScreenRange(): Range;
+      setScreenRange(bufferRange: Range, properties?: { reversed: boolean } ): void;
+      getStartBufferPosition(): Point;
+      getStartScreenPosition(): Point;
+      getEndBufferPosition(): Point;
+      getEndScreenPosition(): Point;
+
+      // Extended Methods
+      getHeadBufferPosition(): Point;
+      getHeadBufferPosition(bufferPosition: Point, properties?: Object): void;
+      getHeadScreenPosition(): Point;
+      getHeadScreenPosition(screenPosition: Point, properties?: Object): void;
+      getTailBufferPosition(): Point;
+      getTailBufferPosition(bufferPosition: Point, properties?: Object): void;
+      getTailScreenPosition(): Point;
+      getTailScreenPosition(screenPosition: Point, properties?: Object): void;
+      hasTail(): boolean;
+      plantTail(properties?: Object): void;
+      clearTail(properties?: Object): void;
     }
 
     export class ThemeManager {
