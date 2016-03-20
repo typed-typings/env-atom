@@ -1,33 +1,13 @@
 {
-  "name": "env-atom",
-  "version": "0.0.1",
-  "description": "The type definition for https://github.com/atom/atom",
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "tslint": "github:unional/tslint",
-    "tslint-config-typings": "^0.1.0",
-    "typescript": "^1.8.9"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/typed-typings/env-atom.git"
-  },
-  "keywords": [
-    "typings",
-    "typed",
-    "atom"
-  ],
-  "author": "unional",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/typed-typings/env-atom/issues"
-  },
-  "homepage": "https://github.com/typed-typings/env-atom#readme",
+  "private": true,
   "scripts": {
     "build": "typings bundle -A -o spec",
     "test": "tsc -p spec && apm test"
+  },
+  "devDependencies": {
+    "tslint": "github:unional/tslint",
+    "tslint-config-typings": "^0.1.0",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.9"
   }
 }
