@@ -4,7 +4,7 @@
     "moduleResolution": "node"
   },
   "files": [
-    "test.ts",
+    "atom-spec.ts",
     "main.d.ts",
     "../typings/main.d.ts"
   ]

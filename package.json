@@ -7,9 +7,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "atom": "^1.0.0",
-    "blue-tape": "^0.2.0",
-    "ts-node": "^0.5.5",
     "tslint": "github:unional/tslint",
     "tslint-config-typings": "^0.1.0",
     "typescript": "^1.8.9"
@@ -30,7 +27,7 @@
   },
   "homepage": "https://github.com/typed-typings/env-atom#readme",
   "scripts": {
-    "build": "typings bundle -A -o test",
-    "test": "ts-node -P test test/test.ts"
+    "build": "typings bundle -A -o spec",
+    "test": "tsc -p spec && apm test"
   }
 }

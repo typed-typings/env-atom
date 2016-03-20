@@ -3,10 +3,9 @@
   "main": "index.d.ts",
   "ambient": true,
   "homepage": "https://github.com/atom/atom",
-  "devDependencies": {
-    "blue-tape": "registry:npm/blue-tape#0.1.0+20160211003958"
-  },
+  "devDependencies": {},
   "ambientDevDependencies": {
-    "node": "registry:dt/node#4.0.0+20160319033040"
+    "expect": "registry:global/expect#1.13.4+20160211003958",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160317120654"
   }
 }
