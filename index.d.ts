@@ -18,7 +18,7 @@ declare namespace atom {
       views: ViewRegistry;
       workspace: Workspace;
       // Extended Methods
-      onDidBeep(callback: () => void): Disposable;
+      onDidBeep: EventHandler;
       onWillThrowError(callback: (event: {
         originalError: Object;
         message: string;
@@ -145,13 +145,92 @@ declare namespace atom {
       add(itemsBySelector: ContextMenuItem): Disposable;
     }
 
+    export interface Cursor {
+      onDidChangePosition: CursorChangeEventHandler;
+      onDidDestroy: EventHandler;
+      onDidChangeVisibility(callback: (visibility: boolean) => void): Disposable;
+      setScreenPosition(screenPosition: number[], options?: { autoscroll: boolean }): void;
+      getScreenPosition(): Point;
+      setBufferPosition(bufferPosition: number[], options?: { autoscroll: boolean }): void;
+      getBufferPosition(): Point;
+      getScreenRow(): number;
+      getScreenColumn(): number;
+      getBufferRow(): number;
+      getBufferColumn(): number;
+      getCurrentBufferLine(): number;
+      isAtBeginningOfLine(): boolean;
+      isAtEndOfLine(): boolean;
+      getMarker(): TextEditorMarker;
+      isSurroundedByWhitespace(): boolean;
+      isBetweenWOrdAndNonWord(): boolean;
+      isInsideWord(option?: { wordRegex: RegExp }): boolean;
+      getIndentLevel(): number;
+      getScopeDescriptor(): ScopeDescriptor;
+      hasPrecedingCharactersOnLine(): boolean;
+      isLastCursor(): boolean;
+      moveUp(rowCount?: number, options?: { moveToEndOfSelection }): void;
+      moveDown(rowCount?: number, options?: { moveToEndOfSelection }): void;
+      moveLeft(columnCount?: number, options?: { moveToEndOfSelection }): void;
+      moveRight(columnCount?: number, options?: { moveToEndOfSelection }): void;
+      moveToTop(): void;
+      moveToBottom(): void;
+      moveToBeginningOfScreenLine(): void;
+      moveToBeginningOfLine(): void;
+      moveToFirstCharacterOfLine(): void;
+      moveToEndOfScreenLine(): void;
+      moveToEndOfLine(): void;
+      moveToBeginningOfWord(): void;
+      moveToEndOfWord(): void;
+      moveToBeginningOfNextWord(): void;
+      moveToPreviousWordBoundary(): void;
+      moveToNextWordBoundary(): void;
+      moveToPreviousSubwordBoundary(): void;
+      moveToNextSubwordBoundary(): void;
+      skipLeadingWhitespace(): void;
+      moveToBeginningOfNextParagraph(): void;
+      moveToBeginningOfPreviousParagraph(): void;
+      getPreviousWordBoundaryBufferPosition(options?: { wordRegex: RegExp }): any;
+      getNextWordBoundaryBufferPosition(options?: { wordRegex: RegExp }): any;
+      getBeginningOfCurrentWordBufferPosition(options?: {
+        wordRegex: RegExp,
+        includeNonWordCharacters: boolean,
+        allowPrevious: boolean}): Range;
+      getEndOfCurrentWordBufferPosition(options?: {
+        wordRegex: RegExp,
+        includeNonWordCharacters: boolean
+      }): Range;
+      getBeginningOfNextWordBufferPosition(options?: { wordRegex: RegExp }): Range;
+      getCurrentWordBufferRange(options?: { wordRegex: RegExp }): Range;
+      getCurrentLineBufferRange(options?: { includeNewLine: boolean }): Range;
+      getCurrentParagraphBufferRange(): Range;
+      getCurrentWordPrefix(): string;
+      setVisible(): void;
+      isVisible(): boolean;
+      compare(otherCursor: Cursor): number;
+      clearAutoscroll(): void;
+      clearSelection(): void;
+      wordRegExp(options?: { includeNonWordCharacters?: boolean }): RegExp;
+      subwordRegExp(options?: { backwards?: boolean}): RegExp
+    }
+
+    export interface CursorChangeEventHandler {
+      (callback: (event: {
+        oldBufferPosition: Point,
+        oldScrrenPosition: Point,
+        newBufferPosition: Point,
+        newScrrenPosition: Point,
+        textChanged: boolean,
+        cursor: Cursor
+      }) => void): Disposable;
+    }
+
     export class Decoration {
       destroy(): void;
       onDidChangeProperties(callback: (event: {
         oldProperties: Object;
         newProperties: Object;
       }) => void): Disposable;
-      onDidDestroy(callback: () => void): Disposable;
+      onDidDestroy: EventHandler;
       getId(): any;
       getMarker(): any; // Marker;
       getProperties(): Object;
@@ -166,7 +245,7 @@ declare namespace atom {
     export class Directory {
       constructor(directoryPath: string, symlink?: boolean);
       create(mode?: number): PromiseLike<boolean>;
-      onDidChange(callback: () => void): Disposable;
+      onDidChange: EventHandler;
       isFile(): boolean;
       isDirectory(): boolean;
       isSymbolicLink(): boolean;
@@ -199,8 +278,12 @@ declare namespace atom {
       emit(eventName: string, value: any): void;
     }
 
+    export interface EventHandler {
+      (callback: () => void): Disposable;
+    }
+
     export interface EventCallback {
-      (event): void
+      (event: any): void;
     }
 
     export class File {
@@ -235,12 +318,12 @@ declare namespace atom {
     export class GitRepository {
       static open(path: string, options?: { refreshOnWindowFocus: boolean }): GitRepository;
       destroy();
-      onDidDestroy(callback: () => void): Disposable;
+      onDidDestroy: EventHandler;
       onDidChangeStatus(callback: (event: {
         path: string;
         pathStatus: number;
       }) => void): Disposable;
-      onDidChangeStatuses(callback: () => void): Disposable;
+      onDidChangeStatuses: EventHandler;
       getType(): string;
       getPath(): string;
       getWorkingDirectory(): string;
@@ -271,7 +354,7 @@ declare namespace atom {
     }
 
     export interface Grammar {
-      onDidUpdate(callback: () => void): Disposable;
+      onDidUpdate: EventHandler;
       tokenizeLines(text: string): any[];
       tokenizeLine(line: string, ruleStack?: any[], firstLine?: boolean): {
         line: string;
@@ -281,9 +364,13 @@ declare namespace atom {
       }
     }
 
+    export interface GrammarEventHandler {
+      (callback: (grammar: Grammar) => void): Disposable;
+    }
+
     export interface GrammarRegistry {
-      onDidAddGrammar(callback: (grammar: Grammar) => void): Disposable;
-      onDidUpdateGrammar(callback: (grammar: Grammar) => void): Disposable;
+      onDidAddGrammar: GrammarEventHandler;
+      onDidUpdateGrammar:GrammarEventHandler;
       getGrammars(): Grammar[];
       grammarForScopeName(scopeName: string): Grammar;
       addGrammar(grammar: Grammar): Disposable;
@@ -292,6 +379,21 @@ declare namespace atom {
       readGrammar(grammarPath: string, callback: (err: Error, grammar: Grammar) => void): void;
       loadGrammarSync(grammarPath: string): Grammar;
       loadGrammar(grammarPath: string, callback: (err: Error, grammar: Grammar) => void): void;
+    }
+
+    export interface Gutter {
+      // Gutter Destruction
+      destroy(): void;
+
+      // Event Subscription
+      onDidChangeVisible(callback: (gutter: Gutter) => void): Disposable;
+      onDidDestroy: EventHandler;
+
+      // Visibility
+      hide(): void;
+      show(): void;
+      isVisible(): boolean;
+      decorateMarker(marker: TextEditorMarker, decorationParams: { type: 'line-number' | 'gutter' }): Decoration;
     }
 
     // Available in lib.d.ts?
@@ -381,6 +483,54 @@ declare namespace atom {
       setPropertiesForMarker(marker: TextEditorMarker /* | Marker */, properties: Object): void;
     }
 
+    export interface MarkerLayer {
+      // Lifecycle
+      copy(): void;
+      destroy(): void;
+      isDestroyed(): boolean;
+      // Querying
+      getMarker(): Marker;
+      getMarkers(): Marker[];
+      getMarkerCount(): number;
+      /**
+       * @params params A hash of key-value pairs constraining the set of returned markers.
+       * You can query against custom marker properties by listing the desired key-value pairs here.
+       * In addition, the following keys are reserved and have special semantics:
+       *    startPosition	Only include markers that start at the given Point.
+       *    endPosition Only include markers that end at the given Point.
+       *    containsPoint Only include markers that contain the given Point, inclusive.
+       *    containsRange	Only include markers that contain the given Range, inclusive.
+       *    startRow Only include markers that start at the given row Number.
+       *    endRow Only include markers that end at the given row Number.
+       *    intersectsRow Only include markers that intersect the given row Number.
+       */
+      findMarkers(params: {
+        startPosition?: Point,
+        endPosition?: Point,
+        containsPoint?: Point,
+        containsRange?: Range,
+        startRow?: number,
+        endRow?: number;
+        intersectsRow?: number
+      }): Marker[];
+      // Marker creation
+      markRange(range: Range | Point[], properties: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): Marker;
+      markPosition(position: Point | number[], properties: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): Marker;
+      // Event subscription
+
+      onDidUpdate: EventHandler;
+      onDidCreateMarker: EventHandler;
+      onDidDestroy(): Disposable;
+    }
+
     export interface MenuItem {
       label: string;
       submenu?: MenuItem[];
@@ -393,8 +543,8 @@ declare namespace atom {
     }
 
     export interface Notification {
-      onDidDismiss(callback: () => void): Disposable;
-      onDidDisplay(callback: () => void): Disposable;
+      onDidDismiss: EventHandler;
+      onDidDisplay: EventHandler;
       getType(): string;
       getMessage(): string;
 
@@ -433,7 +583,7 @@ declare namespace atom {
     }
 
     export interface Package {
-      onDidDeactivate(callback: () => void): Disposable;
+      onDidDeactivate: EventHandler;
       isCompatible(): boolean;
       rebuild(): PromiseLike<{
         code: any,
@@ -444,8 +594,8 @@ declare namespace atom {
     }
 
     export class PackageManager {
-      onDidLoadInitialPackages(callback: () => void): Disposable;
-      onDidActivateInitialPackages(callback: () => void): Disposable;
+      onDidLoadInitialPackages: EventHandler;
+      onDidActivateInitialPackages: EventHandler;
       onDidActivatePackage(callback: (activatedPackage: Package) => void): Disposable;
       onDidDeactivatePackage(callback: (deactivatedPackage: Package) => void): Disposable;
       onDidLoadPackage(callback: (loadedPackage: Package) => void): Disposable;
@@ -551,6 +701,7 @@ declare namespace atom {
       preserveFolds: boolean;
       autoScroll: boolean;
     }
+
     export class Selection {
       onDidChangeRange(callback: (event: {
         oldBufferRange: Range;
@@ -559,7 +710,7 @@ declare namespace atom {
         newScreenRange: Range;
         selection: Selection
       }) => void): Disposable;
-      onDidDestroy(callback: () => void): Disposable;
+      onDidDestroy: EventHandler;
       getScreenRange(): Range;
       setScreenRange(screenRange: Range, options?: SetRangeOption): void;
       getbufferRange(): Range;
@@ -604,7 +755,7 @@ declare namespace atom {
         autoIndentNewLine: boolean;
         autoDecreaseIndent: boolean;
         normalizeLineEndings?: boolean;
-        undo: string
+        undo: 'skip'
       }): void;
       backspace(): void;
       deleteToPreviousWordBoundary(): void;
@@ -652,6 +803,242 @@ declare namespace atom {
       getUserStyleSheetPath(): string;
     }
 
+    export interface SelectionChangeEventHandler {
+      (callback: (event: {
+        oldBufferRange: Range,
+        oldScreenRange: Range,
+        newBufferRange: Range,
+        newScreenRange: Range,
+        selection: Selection
+      }) => void): Disposable;
+    }
+
+    export class TextBuffer {
+      constructor(params: string | { load: boolean, text: string });
+      onWillChange(callback: (event: {
+        oldRange: Range,
+        newRange: Range,
+        oldText: string,
+        newText: string
+      }) => void): Disposable;
+      onDidChange(callback: (event: {
+        oldRange: Range,
+        newRange: Range,
+        oldText: string,
+        newText: string
+      }) => void): Disposable;
+      OnDidStopChanging: EventHandler;
+      onDidConflict: EventHandler;
+      onDidChangeModified(callback: (modified: boolean) => void): Disposable;
+      onDidUpdateMarkers: EventHandler;
+      onDidCreateMarker(callback: (marker: TextEditorMarker)=> void): Disposable;
+      onDidChangePath(callback: (path: string) => void): Disposable;
+      onDidChangeEncoding(callback: (encoding: string) => void): Disposable;
+      onWillSave: EventHandler;
+      onDidSave(callback: (event: { path: string })=>void): Disposable;
+      onDidDelete: EventHandler;
+      onWillReload: EventHandler;
+      onDidReload: EventHandler;
+      onDidDestroy: EventHandler;
+      onWillThrowWatchError(callback: (errorObject: {
+        error: Object,
+        handle(): void
+      }) => void): Disposable;
+      getStoppedChangingDelay(): number;
+      isModified(): boolean;
+      isInConflict(): boolean;
+      getPath(): string;
+      setPath(filePath: string): void;
+      setEncoding(encoding: string): void;
+      getEncoding(): string;
+      getUri(): string;
+      isEmpty(): boolean;
+      getText(): string;
+      getTextInRange(range: Range): string;
+      getLines(): string[];
+      getLastLine(): string;
+      lineForRow(row: number): string;
+      lineEndingForRow(row: number): '\n' | '\r' | '\r\n' | '';
+      lineLengthForRow(row: number): number;
+      isRowBlank(row: number): boolean;
+      previousNonBlankRow(startRow: number): number;
+      nextNonBlankRow(startRow: number): number;
+      setText(text: string): Range;
+      setTextViaDiff(text: string): any;
+      setTextInRange(range: Range, text: string, options?: { normalizeLineEndings?: boolean, undo?: 'skip'}): Range;
+      insert(position: Point, text: string, options?: { normalizeLineEndings?: boolean, undo?: 'skip'}): Range;
+      append(text: string, options?: { normalizeLineEndings?: boolean, undo?: 'skip'}): Range;
+      delete(range: Range): Range;
+      deleteRow(row: number): Range;
+      deleteRows(startRow: number, endRow: number): Range;
+      addMarkerLayer(options: { maintainHistory: boolean }): MarkerLayer;
+      getMarkerLayer(id: any): MarkerLayer;
+      markRange(range: Range | Point[], properties: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): Marker;
+      markPosition(position: Point | number[], properties: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): Marker;
+      getMarkers(): Marker[];
+      getMarker(id: number): Marker;
+      /**
+       * @params params A hash of key-value pairs constraining the set of returned markers.
+       * You can query against custom marker properties by listing the desired key-value pairs here.
+       * In addition, the following keys are reserved and have special semantics:
+       *    startPosition	Only include markers that start at the given Point.
+       *    endPosition Only include markers that end at the given Point.
+       *    containsPoint Only include markers that contain the given Point, inclusive.
+       *    containsRange	Only include markers that contain the given Range, inclusive.
+       *    startRow Only include markers that start at the given row Number.
+       *    endRow Only include markers that end at the given row Number.
+       *    intersectsRow Only include markers that intersect the given row Number.
+       */
+      findMarkers(params: {
+        startPosition?: Point,
+        endPosition?: Point,
+        containsPoint?: Point,
+        containsRange?: Range,
+        startRow?: number,
+        endRow?: number;
+        intersectsRow?: number
+      }): Marker[];
+      getMarkerCount(): number;
+      undo(): void;
+      redo(): void;
+      transact(fn: () => void): void;
+      transact(groupingInterval: number, fn: () => void): void;
+      clearUndoStack(): void;
+      createCheckpoint(): any;
+      revertToCheckpoint(): boolean;
+      groupChangesSinceCheckpoint(): boolean;
+      scan(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+      backwardsScan(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+      scanInRange(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+      backwardsScanInRange(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+      replace(regex: RegExp, replacementText: string): number;
+      getRange(): Range;
+      getLineCount(): number;
+      getLastRow(): number;
+
+      getFirstPosition(): Point;
+      getEndPosition(): Point;
+      getMaxCharacterIndex():  number;
+      rangeForRow(row: number, includeNewline: boolean): Range;
+      characterIndexForPosition(position: Point): number;
+      positionForCharacterIndex(offset: number): Point;
+      clipRange(range: Range): Range;
+      clipPosition(position: Point): Point;
+      save(): void;
+      saveAs(filePath: string): void;
+      reload(): void;
+    }
+
+    // NOT FOUND
+    export class Marker extends TextEditorMarker {
+
+    }
+
+    export class TextEditor {
+      onDidChangeTitle: EventHandler;
+      onDidChangePath: EventHandler;
+      onDidChange: EventHandler;
+      onDidStopChanging: EventHandler;
+      onDidChangeCursorPosition: CursorChangeEventHandler;
+      onDidChangeSelectionRange: SelectionChangeEventHandler;
+      onDidSave(callback: (event: { path: string }) => void): Disposable;
+      onDidDestroy: EventHandler;
+      getBuffer(): TextBuffer;
+      observeGutters(callback: (gutter: Gutter) => void): Disposable;
+      onDidAddGutter(callback: (gutter: Gutter) => void): Disposable;
+      onDidRemoveGutter(callback: (name: string) => void): Disposable;
+
+      // Extended Methods
+      onDidChangeSoftWrapped: EventHandler;
+      onDidChangeEncoding: EventHandler;
+      observeGrammar: GrammarEventHandler;
+      onDidChangeGrammar: GrammarEventHandler;
+      onDidChangeModified: EventHandler;
+      onDidConflict: EventHandler;
+      onWillInsertText(callback: (event: { text: string, cancel(): void }) => void): Disposable;
+      onDidInsertText(callback: (event: { text: string }) => void): Disposable;
+      observeCursors(callback: (cursor: Cursor) => void): Disposable;
+      onDidAddCursor(callback: (cursor: Cursor) => void): Disposable;
+      onDidRemoveCursor(callback: (cursor: Cursor) => void): Disposable;
+      observeSelections(callback: (selection: Selection) => void): Disposable;
+      onDidAddSelection(callback: (selection: Selection) => void): Disposable;
+      onDidRemoveSelection(callback: (selection: Selection) => void): Disposable;
+      observeDecorations(callback: (decoration: Decoration) => void): Disposable;
+      onDidAddDecoration(callback: (decoration: Decoration) => void): Disposable;
+      onDidRemoveDecoration(callback: (decoration: Decoration) => void): Disposable;
+      onDidChangePlaceholderText(callback: (placeholderText: string) => void): Disposable;
+
+      // File Details
+      getTitle(): string;
+      getLongTitle(): string;
+      getPath(): string;
+      isModified(): boolean;
+      isEmpty(): boolean
+
+      // Extended Methods
+      getEncoding(): string;
+      setEncoding(encoding): void;
+
+      // File Operations
+      save(): void;
+      saveAs(filePath: string): void;
+
+      // Reading Text
+      getText(): string;
+      getTextInBufferRange(range: Range): string;
+      getLineCount(): number;
+      getScreenLineCount(): number;
+      getLastBufferRow(): number;
+      getLastScreenRow(): number;
+      lineTextForBufferRow(bufferRow: number): string;
+      lineTextForScreenRow(screenRow: number): string;
+      getCurrentParagraphBufferRange(): Range;
+
+      // Mutating Text
+      setText(text: string): void
+      setTextInBufferRange(range: Range, text: string, options?: {
+        normalizeLineEndings?: boolean,
+        undo?: 'skip'
+      }): Range;
+      insertText(text: string, options?: {
+        select: boolean;
+        autoIndent: boolean;
+        autoIndentNewLine: boolean;
+        autoDecreaseIndent: boolean;
+        normalizeLineEndings?: boolean;
+        undo: 'skip'
+      }): Range | boolean;
+      insertNewline(): void;
+      delete(): void;
+      backspace(): void;
+
+      // Extended Methods
+      mutateSelectedText(fn: (selection: Selection, index: number) => void): void;
+      transpose(): void;
+      upperCase(): void;
+      lowerCase(): void;
+      toggleLineCommentsInSelection(): void;
+      insertNewlineBelow(): void;
+      insertNewlineAbove(): void;
+      deleteToBeginningOfWord(): void;
+      deleteToPreviousWordBoundary(): void;
+      deleteToNextWordBoundary(): void;
+      deleteToBeginningOfSubword(): void;
+      deleteToEndOfSubword(): void;
+      deleteToBeginningOfLine(): void;
+      deleteToEndOfLine(): void;
+      deleteToEndOfWord(): void;
+      deleteLine(): void;
+    }
+
     export class TextEditorMarker {
       destroy(): void;
       copy(properties?: Object): TextEditorMarker;
@@ -672,7 +1059,7 @@ declare namespace atom {
         newProperties: Object;
         textChanged: boolean;
       }) => void): Disposable;
-      onDidDestroy(callback: () => void): Disposable;
+      onDidDestroy: EventHandler;
       isValid(): boolean;
       isDestroyed(): boolean;
       isReversed(): boolean;
@@ -705,7 +1092,7 @@ declare namespace atom {
     }
 
     export class ThemeManager {
-      onDidChangeActiveThemes(callback: () => void): Disposable;
+      onDidChangeActiveThemes: EventHandler;
       getLoadedThemeNames(): string[];
       getLoadedThemes(): any[];
       getActiveThemeNames(): string[];
