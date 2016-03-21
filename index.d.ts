@@ -104,6 +104,12 @@ declare namespace atom {
       };
     }
 
+    export interface ClipScreenPositionOption {
+        wrapBeyondNewlines?: boolean;
+        wrapAtSoftNewlines?: boolean;
+        screenLine?: boolean;
+    }
+
     export interface CommandRegistry {
       add(target: string, commandName: string, callback: EventCallback): any;
       findCommands(params: { target: any }): Array<{ name: string, displayName: string }>;
@@ -210,7 +216,7 @@ declare namespace atom {
       clearAutoscroll(): void;
       clearSelection(): void;
       wordRegExp(options?: { includeNonWordCharacters?: boolean }): RegExp;
-      subwordRegExp(options?: { backwards?: boolean}): RegExp
+      subwordRegExp(options?: { backwards?: boolean}): RegExp;
     }
 
     export interface CursorChangeEventHandler {
@@ -361,7 +367,7 @@ declare namespace atom {
         tags: number[];
         tokens(): any;
         ruleStack: any[];
-      }
+      };
     }
 
     export interface GrammarEventHandler {
@@ -481,6 +487,11 @@ declare namespace atom {
       getProperties(): Object;
       setProperties(newProperties: Object): void;
       setPropertiesForMarker(marker: TextEditorMarker /* | Marker */, properties: Object): void;
+    }
+
+    // NOT FOUND
+    export class Marker extends TextEditorMarker {
+
     }
 
     export interface MarkerLayer {
@@ -618,6 +629,79 @@ declare namespace atom {
       getAvailablePackageMetadata(): string[];
     }
 
+    export interface Pane {
+      // Event Subscription
+      onDidChangeFlexScale(callback: (flexScale: number) => void): Disposable;
+      observeFlexScale(callback: (flexScale: number) => void): Disposable;
+      onDidActivate: EventHandler;
+      onWillDestroy: EventHandler;
+      onDidDestroy: EventHandler;
+      onDidChangeActive(callback: (active: boolean) => void): Disposable;
+      observeActive(callback: (active: boolean) => void): Disposable;
+      onDidAddItem(callback: (event: { item: any, index: number }) => void): Disposable;
+      onDidRemoveItem(callback: (event: { item: any, index: number }) => void): Disposable;
+      onWillRemoveItem(callback: (event: { item: any, index: number }) => void): Disposable;
+      onDidMoveItem(callback: (event: { item: any, oldIndex: number, newIndex: number }) => void): Disposable;
+      observeItems(callback: (item: any) => void): Disposable;
+      onDidChangeActiveItem(callback: (activeItem: any) => void): Disposable;
+      observeActiveItem(callback: (activeItem: any) => void): Disposable;
+      onWillDestroyItem(callback: (event: { item: any, index: number }) => void): Disposable;
+
+      // Items
+      getItems(): any[];
+      getActiveItem(): any;
+      itemAtIndex(index: number): any;
+      activateNextItem(): void;
+      activatePreviousItem(): void;
+      moveItemRight(): void;
+      moveItemLeft(): void;
+      getActiveItemIndex(): number;
+      activateItemAtIndex(index: number): void;
+      activateItem(options?: { pending?: boolean }): void;
+      addItem(item: any, options: { index: number, pending: boolean }): any;
+      addItems(items: any[], index?: number): any[];
+      moveItem(item: any, index: number): void;
+      moveItemToPane(item: any, pane: Pane, index: number): void;
+      destroyActiveItem(): void;
+      destroyItem(item: any): void;
+      destroyItems(): void;
+      destroyInactiveItems(): void;
+      saveActiveItem(): void;
+      saveActiveItemAs(nextAction?: Function): void;
+      saveItem(item, nextAction?: Function): void;
+      saveItemAs(item, nextAction?: Function): void;
+      saveItems(): void;
+      itemForURI(uri: string): void;
+      activateItemForURI(uri: string): boolean;
+
+      // Lifecycle
+      isActive(): boolean;
+      activate(): void;
+      destroy(): void;
+
+      // Splitting
+      splitLeft(params?: { items?: any[], copyActiveItem?: boolean }): Pane;
+      splitRight(params?: { items?: any[], copyActiveItem?: boolean }): Pane;
+      splitUp(params?: { items?: any[], copyActiveItem?: boolean }): Pane;
+      splitDown(params?: { items?: any[], copyActiveItem?: boolean }): Pane;
+    }
+
+    export interface Panel {
+      // Construction and Destruction
+      destroy(): void;
+
+      // Event Subscription
+      onDidChangeVisible(callback: (visible) => void): Disposable;
+      onDidDestroy: EventHandler;
+
+      // Panel Details
+      getItem(): any;
+      getPriority(): number;
+      isVisible(): boolean;
+      hide(): void;
+      show(); void;
+    }
+
     export class Point {
       static fromObject(object: Point | number[], copy?: boolean): Point;
       static min(point1: Point, point2: Point): Point;
@@ -696,6 +780,19 @@ declare namespace atom {
 
     // NOT FOUND
     export interface Repository { }
+
+    export interface ScanFunction {
+      (regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+    }
+
+    export interface ScanInRangeFunction {
+      (regex: RegExp, range: Range, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+    }
+
+    export class ScopeDescriptor {
+      constructor(options?: { scopes: string[] });
+      getScopesArray(): string[];
+    }
 
     export interface SetRangeOption {
       preserveFolds: boolean;
@@ -784,11 +881,6 @@ declare namespace atom {
       compare(otherSelection: Selection): number;
     }
 
-    export class ScopeDescriptor {
-      constructor(options?: { scopes: string[] });
-      getScopesArray(): string[];
-    }
-
     export interface StyleElement extends HTMLStyleElement {
       sourcePath: string;
       context: string;
@@ -827,7 +919,7 @@ declare namespace atom {
         oldText: string,
         newText: string
       }) => void): Disposable;
-      OnDidStopChanging: EventHandler;
+      onDidStopChanging: EventHandler;
       onDidConflict: EventHandler;
       onDidChangeModified(callback: (modified: boolean) => void): Disposable;
       onDidUpdateMarkers: EventHandler;
@@ -915,10 +1007,10 @@ declare namespace atom {
       createCheckpoint(): any;
       revertToCheckpoint(): boolean;
       groupChangesSinceCheckpoint(): boolean;
-      scan(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
-      backwardsScan(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
-      scanInRange(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
-      backwardsScanInRange(regex: RegExp, iterator: (match: any, matchText: string, range: Range, stop: Function, replace: (value: string) => void) => void): void;
+      scan: ScanFunction;
+      backwardsScan: ScanFunction;
+      scanInRange: ScanInRangeFunction;
+      backwardsScanInRange: ScanInRangeFunction;
       replace(regex: RegExp, replacementText: string): number;
       getRange(): Range;
       getLineCount(): number;
@@ -935,11 +1027,6 @@ declare namespace atom {
       save(): void;
       saveAs(filePath: string): void;
       reload(): void;
-    }
-
-    // NOT FOUND
-    export class Marker extends TextEditorMarker {
-
     }
 
     export class TextEditor {
@@ -1037,6 +1124,272 @@ declare namespace atom {
       deleteToEndOfLine(): void;
       deleteToEndOfWord(): void;
       deleteLine(): void;
+
+      // History
+      undo(): void;
+      redo(): void;
+
+      // Extended Methods
+      transact(fn: Function): void;
+      transact(groupingInterval: number, fn: Function): void;
+      abortTransaction(): void;
+      createCheckpoint(): any;
+      revertToCheckpoint(): boolean;
+      groupChangesSinceCheckpoint(): boolean;
+
+      // TextEditor Coordinates
+      screenPositionForBufferPosition(bufferPosition: Point | number[], options?: ClipScreenPositionOption): Point;
+      bufferPositionForScreenPosition(bufferPosition: Point | number[], options?: ClipScreenPositionOption): Point;
+      screenRangeForBufferRange(bufferRange: Range): Range;
+      bufferRangeForScreenRange(screenRange: Range): Range;
+
+      // Extended Methods
+      clipBufferPosition(bufferPosition: Point): Point;
+      clipBufferRange(range: Range): Range;
+      clipScreenPosition(screenPosition: Point, options?: ClipScreenPositionOption): Point;
+      clipScreenRange(range: Range, options?: ClipScreenPositionOption): Range;
+
+      // Decorations
+      decorateMarker(marker: TextEditorMarker, decorationParams: {
+        type: 'line' | 'line-number' | 'highlight' | 'overlay' | 'gutter' | 'block',
+        class: string,
+        item?: HTMLElement | Object,
+        onlyHead?: boolean,
+        onlyEmpty?: boolean,
+        onlyNonEmpty?: boolean,
+        position?: 'head' | 'tail' | 'before' | 'after'
+      }): Decoration;
+      decorateMarkerLayer(markerLayer: TextEditorMarkerLayer | MarkerLayer, decorationParams: {
+        type: 'line' | 'line-number' | 'highlight' | 'block',
+        class: string,
+        item?: HTMLElement | Object,
+        onlyHead?: boolean,
+        onlyEmpty?: boolean,
+        onlyNonEmpty?: boolean,
+        position?: 'head' | 'tail' | 'before' | 'after'
+      }): Decoration;
+
+      // Extended Methods
+      getDecorations(propertyFilter?: Object): Decoration[];
+      getLineDecorations(propertyFilter?: Object): Decoration[];
+      getLineNumberDecorations(propertyFilter?: Object): Decoration[];
+      getHighlightDecorations(propertyFilter?: Object): Decoration[];
+      getOverlayDecorations(propertyFilter?: Object): Decoration[];
+
+      // Markers
+      markBufferRange(range: Range | Point[], properties: {
+        maintainHistory?: boolean,
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      markScreenRange(range: Range, properties: {
+        maintainHistory?: boolean,
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      markBufferPosition(position: Point | number[], options?: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      markScreenPosition(position: Point | number[], options?: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      findMarkers(properties: {
+        startBufferRow: number,
+        endBufferRow: number,
+        containsBufferRange: Range | Point[],
+        containsBufferPosition: Point | number[]
+      }): TextEditorMarker[];
+      getMarkerLayer(id: any): TextEditorMarkerLayer;
+      getDefaultMarkerLayer(): TextEditorMarkerLayer;
+
+      // Extended Methods
+      getMarker(id: number): TextEditorMarker;
+      getMarkers(): TextEditorMarker[];
+      getMarkerCount(): number;
+      addMarkerLayer(options: { maintainHistory?: boolean }): TextEditorMarkerLayer;
+
+      // Cursors
+      getCursorBufferPosition(): Point;
+      getCursorBufferPositions(): Point[];
+      setCursorBufferPosition(position: Point | number[], options?: { autoscroll?: boolean }): void
+      getCursorAtScreenPosition(position: Point | number[]): Cursor;
+      getCursorScreenPosition(): Point;
+      getCursorScreenPositions(): Point[];
+      setCursorScreenPosition(position: Point | number[], options?: { autoscroll?: boolean }): void;
+      addCursorAtBufferPosition(bufferPosition: Point): Cursor;
+      addCursorAtScreenPosition(screenPosition: Point): Cursor;
+      hasMultipleCursors(): boolean;
+      moveUp(lineCount?: number): void;
+      moveDown(lineCount?: number): void;
+      moveLeft(columnCount?: number): void;
+      moveRight(columnCount?: number): void;
+      moveToBeginningOfLine(): void;
+      moveToBeginningOfScreenLine(): void;
+      moveToFirstCharacterOfLine(): void;
+      moveToEndOfLine(): void;
+      moveToEndOfScreenLine(): void;
+      moveToBeginningOfWord(): void;
+      moveToEndOfWord(): void;
+
+      // Extended Methods
+      moveToTop(): void;
+      moveToBottom(): void;
+      moveToBeginningOfNextWord(): void;
+      moveToPreviousWordBoundary(): void;
+      moveToNextWordBoundary(): void;
+      moveToPreviousSubwordBoundary(): void;
+      moveToNextSubwordBoundary(): void;
+      moveToBeginningOfNextParagraph(): void;
+      moveToBeginningOfPreviousParagraph(): void;
+      getLastCursor(): Cursor;
+      getWordUnderCursor(options?: { wordRegex?: RegExp, includeNonWordCharacters: boolean, allowPrevious: boolean }): string;
+      getCursors(): Cursor[];
+      getCursorsOrderedByBufferPosition(): Cursor[];
+
+      // Selections
+      getSelectedText(): string;
+      getSelectedBufferRange(): Range;
+      getSelectedBufferRanges(): Range[];
+      setSelectedBufferRange(bufferRange: Range | Point[], options?: {
+        reversed: boolean,
+        preserveFolds: boolean
+      }): void;
+      setSelectedBufferRanges(bufferRanges: Range[] | Point[][], options?: {
+        reversed: boolean,
+        preserveFolds: boolean
+      }): void;
+      getSelectedScreenRange(): Range;
+      getSelectedScreenRanges(): Range[];
+      setSelectedScreenRange(screenRange: Range | Point[], options?: { reversed: boolean}): void;
+      setSelectedScreenRanges(screenRangee: Range[] | Point[][], options?: { reversed: boolean }): void;
+      addSelectionForBufferRange(bufferRange, options?: { reversed: boolean }): Selection;
+      addSelectionForScreenRange(screenRange, options?: { reversed: boolean }): Selection;
+      selectToBufferPosition(position: Point): void;
+      selectToScreenPosition(position: Point): void;
+      selectUp(rowCount: number): void;
+      selectDown(rowCount: number): void;
+      selectLeft(columnCount: number): void;
+      selectRight(columnCount: number): void;
+      selectToTop(): void;
+      selectToBottom(): void;
+      selectAll(): void;
+      selectToBeginningOfLine(): void;
+      selectToFirstCharacterOfLine(): void;
+      selectToEndOfLine(): void;
+      selectToBeginningOfWord(): void;
+      selectToEndOfWord(): void;
+      selectLinesContainingCursors(): void;
+      selectWordsContainingCursors(): void;
+
+      // Extended Methods
+      selectToPreviousSubwordBoundary(): void;
+      selectToNextSubwordBoundary(): void;
+      selectToPreviousWordBoundary(): void;
+      selectToNextWordBoundary(): void;
+      selectToBeginningOfNextWord(): void;
+      selectToBeginningOfNextParagraph(): void;
+      selectToBeginningOfPreviousParagraph(): void;
+      selectMarker(marker: TextEditorMarker): void;
+      getLastSelection(): Selection;
+      getSelections(): Selection[];
+      getSelectionsOrderedByBufferPosition(): Selection[];
+      selectionIntersectsBufferRange(bufferRange: Range | Point[]): boolean;
+
+      // Searching and Replacing
+      scan: ScanFunction;
+      scanInBufferRange: ScanInRangeFunction;
+      backwardsScanInBufferRange: ScanInRangeFunction;
+
+      // Tab Behavior
+      getSoftTabs(): boolean;
+      setSoftTabs(softTabs: boolean): void;
+      toggleSoftTabs(): void;
+      getTabLength(): number;
+      setTabLength(tabLength: number): void;
+
+      // Extended Methods
+      usesSoftTabs(): boolean;
+      getTabText(): string;
+
+      // Soft Wrap Behavior
+      isSoftWrapped(): boolean;
+      setSoftWrapped(softWrapped: boolean): void;
+      toggleSoftWrapped(): void;
+      getSoftWrapColumn(): number;
+
+      // Indentation
+      indentationForBufferRow(bufferRow: number): number;
+      setIndentationForBufferRow(bufferRow: number, newLevel: number, options?: { preserveLeadingWhitespace: boolean }): void;
+
+      // Extended Methods
+      indentSelectedRows(): void;
+      outdentSelectedRows(): void;
+      indentLevelForLine(line: string): number;
+      autoIndentSelectedRows(): void;
+
+      // Grammars
+      getGrammar(): Grammar;
+      setGrammar(grammar: Grammar): void;
+
+      // Managing Syntax Scopes
+      getRootScopeDescriptor(): ScopeDescriptor;
+      scopeDescriptorForBufferPosition(bufferPosition: Point | number[]): ScopeDescriptor;
+
+      // Extended Methods
+      bufferRangeForScopeAtCursor(scopeSelector: string): Range;
+      isBufferRowCommented(): boolean;
+
+      // Clipboard Operations
+      copySelectedText(): void;
+      cutSelectedText(): void;
+      pasteText(options?: {
+        select: boolean;
+        autoIndent: boolean;
+        autoIndentNewLine: boolean;
+        autoDecreaseIndent: boolean;
+        normalizeLineEndings?: boolean;
+        undo: 'skip'
+      }): void;
+      cutToEndOfLine(): void;
+      cutToEndOfBufferLine(): void;
+
+      // Folds
+      foldCurrentRow(): void;
+      unfoldCurrentRow(): void;
+      foldBufferRow(bufferRow: number): void;
+      unfoldBufferRow(bufferRow: number): void;
+
+      //  Extended Methods
+      foldSelectedLines(): void;
+      foldAll(): void;
+      unfoldAll(): void;
+      foldAllAtIndentLevel(level: number): void;
+      isFoldableAtBufferRow(bufferRow: number): boolean;
+      isFoldableAtScreenRow(bufferRow: number): boolean;
+      toggleFoldAtBufferRow(): void;
+      isFoldedAtCursorRow(): boolean;
+      isFoldedAtBufferRow(bufferRow: number): boolean;
+      isFoldedAtScreenRow(screenRow: number): boolean;
+
+      // Gutters
+      addGutter(options: { name: string, priority?: number, visible?: boolean }): Gutter;
+      getGutters(): Gutter[];
+      gutterWithName(name: string): Gutter;
+
+      // Scrolling the TextEditor
+      scrollToCursorPosition(options?: { center?: boolean }): void;
+      scrollToBufferPosition(bufferPosition: Point | number[] | { row: number, column: number }, options?: { center?: boolean }): void;
+      scrollToScreenPosition(screenPosition: Point | number[] | { row: number, column: number }, options?: { center?: boolean }): void;
+
+      // TextEditor Rendering
+      getPlaceholderText(): string
+      setPlaceholderText(placeholderText: string): void;
     }
 
     export class TextEditorMarker {
@@ -1091,6 +1444,51 @@ declare namespace atom {
       clearTail(properties?: Object): void;
     }
 
+    export class TextEditorMarkerLayer {
+      // Lifecycle
+      destroy(): void;
+
+      // Querying
+      getMarker(): TextEditorMarker;
+      getMarkers(): TextEditorMarker[];
+      getMarkerCount(): number;
+      findMarkers(properties: {
+        startBufferRow: number,
+        endBufferRow: number,
+        containsBufferRange: Range | Point[],
+        containsBufferPosition: Point | number[]
+      }): TextEditorMarker[];
+
+      // Marker creation
+      markBufferRange(range: Range | Point[], properties: {
+        maintainHistory?: boolean,
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      markScreenRange(range: Range, properties: {
+        maintainHistory?: boolean,
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      markBufferPosition(position: Point | number[], options?: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+      markScreenPosition(position: Point | number[], options?: {
+        reversed?: boolean,
+        persistent?: boolean,
+        invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
+      }): TextEditorMarker;
+
+      // Event Subscription
+      onDidUpdate: EventHandler;
+      onDidCreateMarker(callback: (marker: TextEditorMarker) => void): Disposable;
+      onDidDestroy: EventHandler;
+    }
+
     export class ThemeManager {
       onDidChangeActiveThemes: EventHandler;
       getLoadedThemeNames(): string[];
@@ -1118,7 +1516,6 @@ declare namespace atom {
     export interface Workspace {
       addModalPanel(option: any);
     }
-
   }
 
   export var command: Typings.CommandRegistry;
@@ -1207,11 +1604,37 @@ declare namespace atom {
 }
 
 declare module 'atom' {
+  export class BufferedNodeProcess extends BufferedProcess {
+  }
+
+  export class BufferedProcess {
+    constructor(options: {
+      command: string,
+      args?: any[],
+      options?: Object,
+      stdout?: (data: string) => void;
+      stderr?: (data: string) => void;
+      exit?: (code: number) => void;
+    });
+    onWillThrowError(callback: (errorObject: { error: Object, handle(): void })=>void): atom.Typings.Disposable;
+    kill(): void;
+  }
   export class CompositeDisposable {
     constructor(...disposables: { dispose: () => any }[]);
     dispose(): void;
     add(...disposables: { dispose: () => any }[]): void;
     remove(disposable: { dispose: () => any }): void;
     clear(): void;
+  }
+
+  export class Task {
+    // Methods
+    static once(taskPath: string, args: any[]): Task;
+    constructor(taskPath: string);
+    start(args: any[], callback?: Function): void;
+    send(message: any): void;
+    on(eventName: string, callback: Function): void;
+    once(taskPath: string, args: any[]): Task;
+    terminate(): void;
   }
 }
