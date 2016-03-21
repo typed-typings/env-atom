@@ -1,5 +1,39 @@
 declare namespace atom {
   namespace Typings {
+    export class BufferedNodeProcess extends BufferedProcess {
+    }
+
+    export class BufferedProcess {
+      constructor(options: {
+        command: string,
+        args?: any[],
+        options?: Object,
+        stdout?: (data: string) => void;
+        stderr?: (data: string) => void;
+        exit?: (code: number) => void;
+      });
+      onWillThrowError(callback: (errorObject: { error: Object, handle(): void })=>void): atom.Typings.Disposable;
+      kill(): void;
+    }
+    export class CompositeDisposable {
+      constructor(...disposables: { dispose: () => any }[]);
+      dispose(): void;
+      add(...disposables: { dispose: () => any }[]): void;
+      remove(disposable: { dispose: () => any }): void;
+      clear(): void;
+    }
+
+    export class Task {
+      // Methods
+      static once(taskPath: string, args: any[]): Task;
+      constructor(taskPath: string);
+      start(args: any[], callback?: Function): void;
+      send(message: any): void;
+      on(eventName: string, callback: Function): void;
+      once(taskPath: string, args: any[]): Task;
+      terminate(): void;
+    }
+
     export interface AtomEnvironment {
       command: CommandRegistry;
       config: Config;
@@ -1601,40 +1635,4 @@ declare namespace atom {
   export function openDevTools(): PromiseLike<void>;
   export function toggleDevTools(): PromiseLike<void>;
   export function executeJavaScriptInDevTools(): void;
-}
-
-declare module 'atom' {
-  export class BufferedNodeProcess extends BufferedProcess {
-  }
-
-  export class BufferedProcess {
-    constructor(options: {
-      command: string,
-      args?: any[],
-      options?: Object,
-      stdout?: (data: string) => void;
-      stderr?: (data: string) => void;
-      exit?: (code: number) => void;
-    });
-    onWillThrowError(callback: (errorObject: { error: Object, handle(): void })=>void): atom.Typings.Disposable;
-    kill(): void;
-  }
-  export class CompositeDisposable {
-    constructor(...disposables: { dispose: () => any }[]);
-    dispose(): void;
-    add(...disposables: { dispose: () => any }[]): void;
-    remove(disposable: { dispose: () => any }): void;
-    clear(): void;
-  }
-
-  export class Task {
-    // Methods
-    static once(taskPath: string, args: any[]): Task;
-    constructor(taskPath: string);
-    start(args: any[], callback?: Function): void;
-    send(message: any): void;
-    on(eventName: string, callback: Function): void;
-    once(taskPath: string, args: any[]): Task;
-    terminate(): void;
-  }
 }

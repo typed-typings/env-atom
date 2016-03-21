@@ -1,6 +1,10 @@
 {
   "name": "atom",
-  "main": "index.d.ts",
+  "files": [
+    "lib/atom-namespace.d.ts",
+    "lib/atom.d.ts",
+    "lib/event-kit.d.ts"
+  ],
   "ambient": true,
   "homepage": "https://github.com/atom/atom",
   "devDependencies": {},
