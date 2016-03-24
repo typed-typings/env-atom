@@ -4,5 +4,5 @@ describe('atom namespace', () => {
   });
   it('config', () => {
     expect(atom.config).toBeDefined();
-  })
+  });
 });
