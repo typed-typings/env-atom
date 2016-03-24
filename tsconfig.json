@@ -5,8 +5,8 @@
   },
   "exclude": [
     "node_modules",
-    "spec",
     "typings/browser",
-    "typings/browser.d.ts"
+    "typings/browser.d.ts",
+    "out/browser.d.ts"
   ]
 }

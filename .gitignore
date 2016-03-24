@@ -39,8 +39,9 @@ node_modules
 
 # typings
 typings
-spec/*.d.ts
-spec/*.js
 
 # output folder
 out
+
+# project
+spec/*.js
