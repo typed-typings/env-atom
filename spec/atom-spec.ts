@@ -1,4 +1,3 @@
-import 'atom';
 import {CompositeDisposable} from 'atom';
 
 describe('global atom', () => {

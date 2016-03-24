@@ -1,8 +1,8 @@
 /// <reference path="./atom-namespace.d.ts" />
 
 declare module 'atom' {
-  export class BufferedNodeProcess extends atom.Typings.BufferedNodeProcess {}
-  export class BufferedProcess extends atom.Typings.BufferedProcess {}
-  export class CompositeDisposable extends atom.Typings.CompositeDisposable {}
-  export class Task extends atom.Typings.Task {}
+  export var BufferedNodeProcess: atom.Typings.BufferedNodeProcess;
+  export var BufferedProcess: atom.Typings.BufferedProcess;
+  export var CompositeDisposable: atom.Typings.CompositeDisposable;
+  export var Task: atom.Typings.Task;
 }
