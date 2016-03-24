@@ -1,13 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "build": "typings bundle -A -o spec",
-    "test": "tsc -p spec && apm test"
+    "watch": "tsc -w",
+    "build": "tsc",
+    "test": "apm test"
   },
   "devDependencies": {
-    "tslint": "github:unional/tslint",
+    "tslint": "git+https://github.com/unional/tslint.git",
     "tslint-config-typings": "^0.1.1",
-    "typescript": "^1.8.9",
     "typings": "^0.7.9"
   }
 }

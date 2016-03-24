@@ -1,4 +1,4 @@
-/// <reference path="atom-namespace.d.ts" />
+/// <reference path="./atom-namespace.d.ts" />
 
 declare module 'atom' {
   export class BufferedNodeProcess extends atom.Typings.BufferedNodeProcess {}
