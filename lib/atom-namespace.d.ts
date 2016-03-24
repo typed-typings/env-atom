@@ -35,7 +35,7 @@ declare namespace atom {
     }
 
     export interface AtomEnvironment {
-      command: CommandRegistry;
+      commands: CommandRegistry;
       config: Config;
       clipboard: Clipboard;
       contextMenu: ContextMenuManager;
@@ -1552,7 +1552,7 @@ declare namespace atom {
     }
   }
 
-  export var command: Typings.CommandRegistry;
+  export var commands: Typings.CommandRegistry;
   export var config: Typings.Config;
   export var clipboard: Typings.Clipboard;
   export var contextMenu: Typings.ContextMenuManager;

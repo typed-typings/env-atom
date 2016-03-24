@@ -3,9 +3,12 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc",
-    "test": "apm test"
+    "test": "apm test",
+    "retest": "npm run build && npm test",
+    "tdd": "onchange 'spec/**/*.ts' -- npm run retest"
   },
   "devDependencies": {
+    "onchange": "^2.2.0",
     "tslint": "git+https://github.com/unional/tslint.git",
     "tslint-config-typings": "^0.1.1",
     "typings": "^0.7.9"
