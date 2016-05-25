@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "onchange": "^2.2.0",
-    "tslint": "git+https://github.com/unional/tslint.git",
-    "tslint-config-typings": "^0.1.1",
-    "typings": "^0.7.9"
+    "tslint": "^3.10.2",
+    "tslint-config-typings": "^0.2.3",
+    "typings": "^1.0.4"
   }
 }

@@ -5,10 +5,10 @@
     "lib/atom.d.ts",
     "lib/event-kit.d.ts"
   ],
-  "ambient": true,
+  "global": true,
   "homepage": "https://github.com/atom/atom",
   "devDependencies": {},
-  "ambientDevDependencies": {
+  "globalDevDependencies": {
     "expect": "registry:global/expect#1.13.4+20160211003958",
     "jasmine": "registry:dt/jasmine#2.2.0+20160317120654"
   }

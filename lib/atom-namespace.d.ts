@@ -1,3 +1,4 @@
+
 declare namespace atom {
   namespace Typings {
     export class BufferedNodeProcess extends BufferedProcess {
