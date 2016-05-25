@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "watch": "tsc -w",
+    "bundle-event-kit": "cd src/event-kit && typings bundle -o ../../dist/event-kit.d.ts",
     "build": "tsc",
     "test": "apm test",
     "retest": "npm run build && npm test",

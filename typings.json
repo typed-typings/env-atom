@@ -1,9 +1,9 @@
 {
   "name": "atom",
   "files": [
-    "lib/atom-namespace.d.ts",
-    "lib/atom.d.ts",
-    "lib/event-kit.d.ts"
+    "dist/atom-namespace.d.ts",
+    "dist/atom.d.ts",
+    "dist/event-kit.d.ts"
   ],
   "global": true,
   "homepage": "https://github.com/atom/atom",
