@@ -1,4 +1,6 @@
 import Disposable = require('../event-kit/disposable');
+import Range = require('../text-buffer/range');
+import Selection = require('./selection');
 
 declare interface SelectionChangeEventHandler {
   (callback: (event: {
@@ -10,4 +12,4 @@ declare interface SelectionChangeEventHandler {
   }) => void): Disposable;
 }
 
-export default SelectionChangeEventHandler;
+export = SelectionChangeEventHandler;

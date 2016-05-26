@@ -1,9 +1,13 @@
 {
   "name": "atom",
   "files": [
-    "dist/atom-namespace.d.ts",
+    "src/atom-namespace.d.ts",
     "dist/atom.d.ts",
-    "dist/event-kit.d.ts"
+    "dist/atom-keymap.d.ts",
+    "dist/event-kit.d.ts",
+    "dist/first-mate.d.ts",
+    "dist/node-pathwatcher.d.ts",
+    "dist/text-buffer.d.ts"
   ],
   "global": true,
   "homepage": "https://github.com/atom/atom",

@@ -1,7 +1,7 @@
 import Disposable = require('../event-kit/disposable');
 import Point = require('../text-buffer/point');
 import TextEditorMarker = require('./text-editor-marker');
-import CursorChangeEventHandler from './cursor-change-event-handler';
+import CursorChangeEventHandler = require('./cursor-change-event-handler');
 import ScopeDescriptor = require('./scope-descriptor');
 
 declare interface Cursor {

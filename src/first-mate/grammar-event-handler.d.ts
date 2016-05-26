@@ -6,4 +6,4 @@ declare interface GrammarEventHandler {
 }
 
 
-export default GrammarEventHandler;
+export = GrammarEventHandler;

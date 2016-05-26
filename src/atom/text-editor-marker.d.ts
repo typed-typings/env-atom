@@ -1,4 +1,5 @@
 import Point = require('../text-buffer/point');
+import Range = require('../text-buffer/range');
 import Disposable = require('../event-kit/disposable');
 
 declare class TextEditorMarker {

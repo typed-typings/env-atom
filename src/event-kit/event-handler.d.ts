@@ -4,4 +4,4 @@ declare interface EventHandler {
   (callback: () => void): Disposable;
 }
 
-export default EventHandler;
+export = EventHandler;

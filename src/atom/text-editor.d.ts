@@ -1,14 +1,23 @@
 import Disposable = require('../event-kit/disposable');
 import TextBuffer = require('../text-buffer/text-buffer');
 import Point = require('../text-buffer/point');
-import Cursor = require('./cursor');
-import TextEditorMarker = require('./text-editor-marker');
-import Gutter = require('./gutter');
-import Decoration = require('./decoration');
+import Range = require('../text-buffer/range');
+import MarkerLayer = require('../text-buffer/marker-layer');
+import ScanFunction = require('../text-buffer/scan-function');
+import ScanInRangeFunction = require('../text-buffer/scan-in-range-function');
+import Grammar = require('../first-mate/grammar');
 
-import CursorChangeEventHandler from './cursor-change-event-handler';
-import SelectionChangeEventHandler from './selection-change-event-handler';
-import GrammarEventHandler from '../first-mate/grammar-event-handler';
+import Cursor = require('./cursor');
+import Decoration = require('./decoration');
+import Gutter = require('./gutter');
+import TextEditorMarker = require('./text-editor-marker');
+import TextEditorMarkerLayer = require('./text-editor-marker-layer');
+import ScopeDescriptor = require('./scope-descriptor');
+
+import CursorChangeEventHandler = require('./cursor-change-event-handler');
+import SelectionChangeEventHandler = require('./selection-change-event-handler');
+import GrammarEventHandler = require('../first-mate/grammar-event-handler');
+import ClipScreenPositionOption = require('./clip-screen-position-option');
 
 declare class TextEditor {
   onDidChangeTitle: (callback: () => void) => Disposable;

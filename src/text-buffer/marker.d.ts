@@ -2,9 +2,7 @@
 import Point = require('./point');
 import Range = require('./range');
 import Disposable = require('../event-kit/disposable')
-declare interface MarkerOption {
 
-}
 declare class Marker {
   constructor(id, layer, range: Range, params: Object);
   onDidDestroy: (callback: () => void) => Disposable;

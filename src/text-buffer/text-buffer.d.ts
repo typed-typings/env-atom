@@ -1,7 +1,12 @@
+import Disposable = require('../event-kit/Disposable');
+
 import Point = require('./point');
 import Range = require('./range');
+import Marker = require('./marker');
+import MarkerLayer = require('./marker-layer');
+import ScanFunction = require('./scan-function');
+import ScanInRangeFunction = require('./scan-in-range-function');
 
-import Disposable = require('../event-kit/Disposable');
 
 declare namespace TextBuffer {
   export var Point: Point;
@@ -26,7 +31,7 @@ declare class TextBuffer {
   onDidConflict: (callback: () => void) => Disposable;
   onDidChangeModified(callback: (modified: boolean) => void): Disposable;
   onDidUpdateMarkers: (callback: () => void) => Disposable;
-  onDidCreateMarker(callback: (marker: TextEditorMarker) => void): Disposable;
+  onDidCreateMarker(callback: (marker: Marker) => void): Disposable;
   onDidChangePath(callback: (path: string) => void): Disposable;
   onDidChangeEncoding(callback: (encoding: string) => void): Disposable;
   onWillSave: (callback: () => void) => Disposable;

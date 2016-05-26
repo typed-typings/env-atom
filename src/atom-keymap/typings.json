@@ -1,0 +1,4 @@
+{
+  "name": "atom-keymap",
+  "main": "atom-keymap.d.ts"
+}

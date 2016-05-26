@@ -1,5 +1,8 @@
 import Disposable = require('../event-kit/disposable');
+
 import TextEditorMarker = require('./text-editor-marker');
+import Decoration = require('./decoration');
+
 declare interface Gutter {
   // Gutter Destruction
   destroy(): void;

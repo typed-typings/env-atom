@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node"
+  },
+  "files": [
+    "typings/index.d.ts",
+    "src/atom-namespace.d.ts",
+    "dist/atom.d.ts",
+    "dist/event-kit.d.ts"
+  ]
+}

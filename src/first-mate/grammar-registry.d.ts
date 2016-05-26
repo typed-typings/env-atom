@@ -2,7 +2,7 @@ import Disposable = require('../event-kit/disposable');
 
 import Grammar = require('./grammar');
 
-import GrammarEventHandler from './grammar-event-handler';
+import GrammarEventHandler = require('./grammar-event-handler');
 
 declare class GrammarRegistry {
   onDidAddGrammar: GrammarEventHandler;

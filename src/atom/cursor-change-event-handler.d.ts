@@ -12,4 +12,4 @@ declare interface CursorChangeEventHandler {
     cursor: Cursor
   }) => void): Disposable;
 }
-export default CursorChangeEventHandler;
+export = CursorChangeEventHandler;

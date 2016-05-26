@@ -62,7 +62,7 @@ export = {
   Emitter,
   Disposable,
   CompositeDisposable
-};
+}
 }
 declare module 'event-kit/event-kit' {
 import alias = require('~event-kit/event-kit');

@@ -1,3 +1,5 @@
+import Disposable = require('../event-kit/disposable');
+
 declare class BufferedProcess {
   constructor(options: {
     command: string,
@@ -7,7 +9,7 @@ declare class BufferedProcess {
     stderr?: (data: string) => void;
     exit?: (code: number) => void;
   });
-  onWillThrowError(callback: (errorObject: { error: Object, handle(): void }) => void): atom.Typings.Disposable;
+  onWillThrowError(callback: (errorObject: { error: Object, handle(): void }) => void): Disposable;
   kill(): void;
 }
 
