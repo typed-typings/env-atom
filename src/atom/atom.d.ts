@@ -1,18 +1,13 @@
+import EventKit = require('event-kit');
+import PathWatcher = require('pathwatcher');
+import KeymapManager = require('atom-keymap');
+import FirstMate = require('first-mate');
+import TextBuffer = require('text-buffer');
+
 import BufferedProcess = require('./buffer-process');
 import BufferedNodeProcess = require('./buffer-node-process');
 import GitRepository = require('./git-repository');
 import Notification = require('./notification');
-import TextBuffer = require('../text-buffer/text-buffer');
-import Point = require('../text-buffer/point');
-import Range = require('../text-buffer/range');
-import File = require('../node-pathwatcher/file');
-import Directory = require('../node-pathwatcher/directory');
-import Emitter = require('../event-kit/emitter');
-import Disposable = require('../event-kit/disposable');
-import CompositeDisposable = require('../event-kit/composite-disposable');
-
-import KeymapManager = require('../atom-keymap/keymap-manager');
-import GrammarRegistry = require('../first-mate/grammar-registry');
 
 import CommandRegistry = require('./command-registry');
 import Config = require('./config');
@@ -36,13 +31,13 @@ export var BufferedProcess: BufferedProcess;
 export var GitRepository: GitRepository;
 export var Notification: Notification;
 export var TextBuffer: TextBuffer;
-export var Point: Point;
+export var Point: TextBuffer.Point;
 export var Range: Range;
 export var File: File;
-export var Directory: Directory;
-export var Emitter: Emitter;
-export var Disposable: Disposable;
-export var CompositeDisposable: CompositeDisposable;
+export var Directory: PathWatcher.Directory;
+export var Emitter: EventKit.Emitter;
+export var Disposable: EventKit.Disposable;
+export var CompositeDisposable: EventKit.CompositeDisposable;
 export var Task: Task;
 export var TextEditor: TextEditor;
 
@@ -58,7 +53,7 @@ declare global {
     export var tooltips: TooltipManager;
     export var notifications: NotificationManager;
     export var project: Project;
-    export var grammars: GrammarRegistry;
+    export var grammars: FirstMate.GrammarRegistry;
     export var packages: PackageManager;
     export var themes: ThemeManager;
     export var styles: StyleManager;
@@ -67,7 +62,7 @@ declare global {
     export var workspace: Workspace;
 
     // Extended Methods
-    export function onDidBeep(callback: () => void): Disposable;
+    export function onDidBeep(callback: () => void): EventKit.Disposable;
     export function onWillThrowError(callback: (event: {
       originalError: Object;
       message: string;
@@ -75,14 +70,14 @@ declare global {
       line: number;
       column: number;
       preventDefault(): void;
-    }) => void): Disposable;
+    }) => void): EventKit.Disposable;
     export function onDidThrowError(callback: (event: {
       originalError: Object;
       message: string;
       url: string;
       line: number;
       column: number;
-    }) => void): Disposable;
+    }) => void): EventKit.Disposable;
 
     // Atom Details
     export function inDevMode(): boolean;

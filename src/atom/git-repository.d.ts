@@ -1,14 +1,14 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 declare class GitRepository {
   static open(path: string, options?: { refreshOnWindowFocus: boolean }): GitRepository;
   destroy();
-  onDidDestroy: (callback: () => void) => Disposable;
+  onDidDestroy: (callback: () => void) => EventKit.Disposable;
   onDidChangeStatus(callback: (event: {
     path: string;
     pathStatus: number;
-  }) => void): Disposable;
-  onDidChangeStatuses: (callback: () => void) => Disposable;
+  }) => void): EventKit.Disposable;
+  onDidChangeStatuses: (callback: () => void) => EventKit.Disposable;
   getType(): string;
   getPath(): string;
   getWorkingDirectory(): string;

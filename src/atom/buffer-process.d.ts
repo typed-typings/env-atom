@@ -1,4 +1,4 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 declare class BufferedProcess {
   constructor(options: {
@@ -9,7 +9,7 @@ declare class BufferedProcess {
     stderr?: (data: string) => void;
     exit?: (code: number) => void;
   });
-  onWillThrowError(callback: (errorObject: { error: Object, handle(): void }) => void): Disposable;
+  onWillThrowError(callback: (errorObject: { error: Object, handle(): void }) => void): EventKit.Disposable;
   kill(): void;
 }
 

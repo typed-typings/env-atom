@@ -1,4 +1,4 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 declare interface MenuItem {
   label: string;
@@ -7,7 +7,7 @@ declare interface MenuItem {
 }
 
 declare class MenuManager {
-  add(items: MenuItem): Disposable;
+  add(items: MenuItem): EventKit.Disposable;
   update(): void;
 }
 export = MenuManager;

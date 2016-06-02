@@ -1,8 +1,8 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 import Notification = require('./notification');
 
 declare class NotificationManager {
-  onDidAddNotification(callback: (notification: Notification) => void): Disposable;
+  onDidAddNotification(callback: (notification: Notification) => void): EventKit.Disposable;
   addSuccess(message: string, options?: {
     detail?: string;
     dismissable?: boolean;

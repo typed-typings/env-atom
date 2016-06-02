@@ -1,22 +1,25 @@
-import Disposable = require('../event-kit/disposable');
-import EventHandler = require('../event-kit/event-handler');
-import Point = require('../text-buffer/point');
-import Range = require('../text-buffer/range');
-import SetRangeOption = require('../text-buffer/set-range-option');
+import EventKit = require('event-kit');
+import TextBuffer = require('text-buffer');
 
 declare class Selection {
   onDidChangeRange(callback: (event: {
-    oldBufferRange: Range;
-    oldScreenRange: Range;
-    newBufferRange: Range;
-    newScreenRange: Range;
+    oldBufferRange: TextBuffer.Range;
+    oldScreenRange: TextBuffer.Range;
+    newBufferRange: TextBuffer.Range;
+    newScreenRange: TextBuffer.Range;
     selection: Selection
-  }) => void): Disposable;
-  onDidDestroy: EventHandler;
-  getScreenRange(): Range;
-  setScreenRange(screenRange: Range, options?: SetRangeOption): void;
-  getbufferRange(): Range;
-  setbufferRange(bufferRange: Range, options?: SetRangeOption): void;
+  }) => void): EventKit.Disposable;
+  onDidDestroy: EventKit.EventHandler;
+  getScreenRange(): TextBuffer.Range;
+  setScreenRange(screenRange: Range, options?: {
+    preserveFolds?: boolean,
+    autoScroll?: boolean
+  }): void;
+  getbufferRange(): TextBuffer.Range;
+  setbufferRange(bufferRange: Range, options?: {
+    preserveFolds?: boolean,
+    autoScroll?: boolean
+  }): void;
   getBufferRowRange(): any;
   isEmpty(): boolean;
   isReversed(): boolean;
@@ -25,8 +28,8 @@ declare class Selection {
   intersectsBufferRange(bufferRange: Range): boolean;
   intersectsWith(otherSelection: Selection): boolean;
   clear(options?: { autoScroll: boolean }): void;
-  selectToScreenPosition(position: Point): void;
-  selectToBufferPosition(position: Point): void;
+  selectToScreenPosition(position: TextBuffer.Point): void;
+  selectToBufferPosition(position: TextBuffer.Point): void;
   selectRight(columnCount?: number): void;
   selectLeft(columnCount?: number): void;
   selectUp(rowCount?: number): void;
@@ -82,7 +85,10 @@ declare class Selection {
   indentSelectedRows(): void;
   addSelectionBelow(): void;
   addSelectionAbove(): void;
-  merge(otherSelection: Selection, options?: SetRangeOption): void;
+  merge(otherSelection: Selection, options?: {
+    preserveFolds?: boolean,
+    autoScroll?: boolean
+  }): void;
   compare(otherSelection: Selection): number;
 }
 export = Selection;

@@ -1,15 +1,15 @@
-import Disposable = require('../event-kit/disposable');
-import Point = require('../text-buffer/point');
+import EventKit = require('event-kit');
+import TextBuffer = require('text-buffer');
 import Cursor = require('./cursor');
 
 declare interface CursorChangeEventHandler {
   (callback: (event: {
-    oldBufferPosition: Point,
-    oldScrrenPosition: Point,
-    newBufferPosition: Point,
-    newScrrenPosition: Point,
+    oldBufferPosition: TextBuffer.Point,
+    oldScrrenPosition: TextBuffer.Point,
+    newBufferPosition: TextBuffer.Point,
+    newScrrenPosition: TextBuffer.Point,
     textChanged: boolean,
     cursor: Cursor
-  }) => void): Disposable;
+  }) => void): EventKit.Disposable;
 }
 export = CursorChangeEventHandler;

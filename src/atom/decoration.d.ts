@@ -1,12 +1,12 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 declare class Decoration {
   destroy(): void;
   onDidChangeProperties(callback: (event: {
     oldProperties: Object;
     newProperties: Object;
-  }) => void): Disposable;
-  onDidDestroy: (callback: () => void) => Disposable;
+  }) => void): EventKit.Disposable;
+  onDidDestroy: (callback: () => void) => EventKit.Disposable;
   getId(): any;
   getMarker(): any; // Marker;
   getProperties(): Object;

@@ -1,8 +1,8 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 declare class Notification {
-  onDidDismiss: (callback: () => void) => Disposable;
-  onDidDisplay: (callback: () => void) => Disposable;
+  onDidDismiss: (callback: () => void) => EventKit.Disposable;
+  onDidDisplay: (callback: () => void) => EventKit.Disposable;
   getType(): string;
   getMessage(): string;
 

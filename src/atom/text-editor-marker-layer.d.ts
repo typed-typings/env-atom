@@ -1,7 +1,6 @@
-import Disposable = require('../event-kit/disposable');
-import EventHandler = require('../event-kit/event-handler');
-import Point = require('../text-buffer/point');
-import Range = require('../text-buffer/range');
+import EventKit = require('event-kit');
+import TextBuffer = require('text-buffer');
+
 import TextEditorMarker = require('./text-editor-marker');
 
 declare class TextEditorMarkerLayer {
@@ -15,38 +14,38 @@ declare class TextEditorMarkerLayer {
   findMarkers(properties: {
     startBufferRow: number,
     endBufferRow: number,
-    containsBufferRange: Range | Point[],
-    containsBufferPosition: Point | number[]
+    containsBufferRange: TextBuffer.Range | TextBuffer.Point[],
+    containsBufferPosition: TextBuffer.Point | number[]
   }): TextEditorMarker[];
 
   // Marker creation
-  markBufferRange(range: Range | Point[], properties: {
+  markBufferRange(range: TextBuffer.Range | TextBuffer.Point[], properties: {
     maintainHistory?: boolean,
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
-  markScreenRange(range: Range, properties: {
+  markScreenRange(range: TextBuffer.Range, properties: {
     maintainHistory?: boolean,
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
-  markBufferPosition(position: Point | number[], options?: {
+  markBufferPosition(position: TextBuffer.Point | number[], options?: {
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
-  markScreenPosition(position: Point | number[], options?: {
+  markScreenPosition(position: TextBuffer.Point | number[], options?: {
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
 
   // Event Subscription
-  onDidUpdate: EventHandler;
-  onDidCreateMarker(callback: (marker: TextEditorMarker) => void): Disposable;
-  onDidDestroy: EventHandler;
+  onDidUpdate: EventKit.EventHandler;
+  onDidCreateMarker(callback: (marker: TextEditorMarker) => void): EventKit.Disposable;
+  onDidDestroy: EventKit.EventHandler;
 }
 
 export = TextEditorMarkerLayer;

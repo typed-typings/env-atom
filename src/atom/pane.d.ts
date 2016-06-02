@@ -1,23 +1,22 @@
-import Disposable = require('../event-kit/disposable');
-import EventHandler = require('../event-kit/event-handler');
+import EventKit = require('event-kit');
 
 declare class Pane {
   // Event Subscription
-  onDidChangeFlexScale(callback: (flexScale: number) => void): Disposable;
-  observeFlexScale(callback: (flexScale: number) => void): Disposable;
-  onDidActivate: EventHandler;
-  onWillDestroy: EventHandler;
-  onDidDestroy: EventHandler;
-  onDidChangeActive(callback: (active: boolean) => void): Disposable;
-  observeActive(callback: (active: boolean) => void): Disposable;
-  onDidAddItem(callback: (event: { item: any, index: number }) => void): Disposable;
-  onDidRemoveItem(callback: (event: { item: any, index: number }) => void): Disposable;
-  onWillRemoveItem(callback: (event: { item: any, index: number }) => void): Disposable;
-  onDidMoveItem(callback: (event: { item: any, oldIndex: number, newIndex: number }) => void): Disposable;
-  observeItems(callback: (item: any) => void): Disposable;
-  onDidChangeActiveItem(callback: (activeItem: any) => void): Disposable;
-  observeActiveItem(callback: (activeItem: any) => void): Disposable;
-  onWillDestroyItem(callback: (event: { item: any, index: number }) => void): Disposable;
+  onDidChangeFlexScale(callback: (flexScale: number) => void): EventKit.Disposable;
+  observeFlexScale(callback: (flexScale: number) => void): EventKit.Disposable;
+  onDidActivate: EventKit.EventHandler;
+  onWillDestroy: EventKit.EventHandler;
+  onDidDestroy: EventKit.EventHandler;
+  onDidChangeActive(callback: (active: boolean) => void): EventKit.Disposable;
+  observeActive(callback: (active: boolean) => void): EventKit.Disposable;
+  onDidAddItem(callback: (event: { item: any, index: number }) => void): EventKit.Disposable;
+  onDidRemoveItem(callback: (event: { item: any, index: number }) => void): EventKit.Disposable;
+  onWillRemoveItem(callback: (event: { item: any, index: number }) => void): EventKit.Disposable;
+  onDidMoveItem(callback: (event: { item: any, oldIndex: number, newIndex: number }) => void): EventKit.Disposable;
+  observeItems(callback: (item: any) => void): EventKit.Disposable;
+  onDidChangeActiveItem(callback: (activeItem: any) => void): EventKit.Disposable;
+  observeActiveItem(callback: (activeItem: any) => void): EventKit.Disposable;
+  onWillDestroyItem(callback: (event: { item: any, index: number }) => void): EventKit.Disposable;
 
   // Items
   getItems(): any[];

@@ -1,7 +1,6 @@
-import Disposable = require('../event-kit/disposable');
-import EventHandler = require('../event-kit/event-handler');
-import KeymapManager = require('../atom-keymap/keymap-manager');
-import GrammarRegistry = require('../first-mate/grammar-registry');
+import EventKit = require('event-kit');
+import KeymapManager = require('atom-keymap');
+import FirstMate = require('first-mate');
 
 import CommandRegistry = require('./command-registry');
 import Config = require('./config');
@@ -28,7 +27,7 @@ declare interface AtomEnvironment {
   tooltips: TooltipManager;
   notifications: NotificationManager;
   project: Project;
-  grammars: GrammarRegistry;
+  grammars: FirstMate.GrammarRegistry;
   packages: PackageManager;
   themes: ThemeManager;
   styles: StyleManager;
@@ -36,7 +35,7 @@ declare interface AtomEnvironment {
   views: ViewRegistry;
   workspace: Workspace;
   // Extended Methods
-  onDidBeep: EventHandler;
+  onDidBeep: EventKit.EventHandler;
   onWillThrowError(callback: (event: {
     originalError: Object;
     message: string;
@@ -44,14 +43,14 @@ declare interface AtomEnvironment {
     line: number;
     column: number;
     preventDefault(): void;
-  }) => void): Disposable;
+  }) => void): EventKit.Disposable;
   onDidThrowError(callback: (event: {
     originalError: Object;
     message: string;
     url: string;
     line: number;
     column: number;
-  }) => void): Disposable;
+  }) => void): EventKit.Disposable;
 }
 
 export = AtomEnvironment;

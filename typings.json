@@ -1,19 +1,17 @@
 {
   "name": "atom",
-  "files": [
-    "src/atom-namespace.d.ts",
-    "dist/atom.d.ts",
-    "dist/atom-keymap.d.ts",
-    "dist/event-kit.d.ts",
-    "dist/first-mate.d.ts",
-    "dist/node-pathwatcher.d.ts",
-    "dist/text-buffer.d.ts"
-  ],
-  "global": true,
+  "main": "src/atom/atom.d.ts",
   "homepage": "https://github.com/atom/atom",
   "devDependencies": {},
   "globalDevDependencies": {
     "expect": "registry:global/expect#1.13.4+20160211003958",
     "jasmine": "registry:dt/jasmine#2.2.0+20160317120654"
+  },
+  "dependencies": {
+    "atom-keymap": "registry:npm/atom-keymap#6.3.2+20160601230841",
+    "event-kit": "registry:npm/event-kit#2.0.0+20160601195915",
+    "first-mate": "registry:npm/first-mate#5.1.1+20160602000010",
+    "pathwatcher": "registry:npm/pathwatcher#6.5.0+20160601231600",
+    "text-buffer": "registry:npm/text-buffer#9.1.0+20160602000024"
   }
 }

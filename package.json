@@ -2,13 +2,7 @@
   "private": true,
   "scripts": {
     "watch": "tsc -w",
-    "bundle-atom": "cd src/atom && typings bundle -o ../../dist/atom.d.ts",
-    "bundle-atom-keymap": "cd src/atom-keymap && typings bundle -o ../../dist/atom-keymap.d.ts",
-    "bundle-event-kit": "cd src/event-kit && typings bundle -o ../../dist/event-kit.d.ts",
-    "bundle-first-mate": "cd src/first-mate && typings bundle -o ../../dist/first-mate.d.ts",
-    "bundle-node-pathwatcher": "cd src/node-pathwatcher && typings bundle -o ../../dist/node-pathwatcher.d.ts",
-    "bundle-text-buffer": "cd src/text-buffer && typings bundle -o ../../dist/text-buffer.d.ts",
-    "build": "npm run bundle-atom && npm run bundle-event-kit && tsc",
+    "build": "typings bundle -o dist/atom.d.ts",
     "test": "apm test",
     "retest": "npm run build && npm test",
     "tdd": "onchange 'spec/**/*.ts' -- npm run retest"

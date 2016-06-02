@@ -1,7 +1,7 @@
-import EventHandler = require('../event-kit/event-handler');
+import EventKit = require('event-kit');
 
 declare interface Package {
-  onDidDeactivate: EventHandler;
+  onDidDeactivate: EventKit.EventHandler;
   isCompatible(): boolean;
   rebuild(): PromiseLike<{
     code: any,

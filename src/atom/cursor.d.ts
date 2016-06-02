@@ -1,17 +1,17 @@
-import Disposable = require('../event-kit/disposable');
-import Point = require('../text-buffer/point');
+import EventKit = require('event-kit');
+import TextBuffer = require('text-buffer');
 import TextEditorMarker = require('./text-editor-marker');
 import CursorChangeEventHandler = require('./cursor-change-event-handler');
 import ScopeDescriptor = require('./scope-descriptor');
 
 declare interface Cursor {
   onDidChangePosition: CursorChangeEventHandler;
-  onDidDestroy: (callback: () => void) => Disposable;
-  onDidChangeVisibility(callback: (visibility: boolean) => void): Disposable;
+  onDidDestroy: (callback: () => void) => EventKit.Disposable;
+  onDidChangeVisibility(callback: (visibility: boolean) => void): EventKit.Disposable;
   setScreenPosition(screenPosition: number[], options?: { autoscroll: boolean }): void;
-  getScreenPosition(): Point;
+  getScreenPosition(): TextBuffer.Point;
   setBufferPosition(bufferPosition: number[], options?: { autoscroll: boolean }): void;
-  getBufferPosition(): Point;
+  getBufferPosition(): TextBuffer.Point;
   getScreenRow(): number;
   getScreenColumn(): number;
   getBufferRow(): number;

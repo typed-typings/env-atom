@@ -1,15 +1,15 @@
-import Disposable = require('../event-kit/disposable');
-import Range = require('../text-buffer/range');
+import EventKit = require('event-kit');
+import TextBuffer = require('text-buffer');
 import Selection = require('./selection');
 
 declare interface SelectionChangeEventHandler {
   (callback: (event: {
-    oldBufferRange: Range,
-    oldScreenRange: Range,
-    newBufferRange: Range,
-    newScreenRange: Range,
+    oldBufferRange: TextBuffer.Range,
+    oldScreenRange: TextBuffer.Range,
+    newBufferRange: TextBuffer.Range,
+    newScreenRange: TextBuffer.Range,
     selection: Selection
-  }) => void): Disposable;
+  }) => void): EventKit.Disposable;
 }
 
 export = SelectionChangeEventHandler;

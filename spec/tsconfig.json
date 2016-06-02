@@ -4,9 +4,8 @@
     "moduleResolution": "node"
   },
   "files": [
-    "typings/index.d.ts",
-    "src/atom-namespace.d.ts",
-    "dist/atom.d.ts",
-    "dist/event-kit.d.ts"
+    "../typings/index.d.ts",
+    "../src/atom-namespace.d.ts",
+    "../dist/atom.d.ts"
   ]
 }

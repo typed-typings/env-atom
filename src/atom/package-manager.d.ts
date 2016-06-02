@@ -1,14 +1,13 @@
-import Disposable = require('../event-kit/disposable');
-import EventHandler = require('../event-kit/event-handler');
+import EventKit = require('event-kit');
 import Package = require('./package');
 
 declare class PackageManager {
-  onDidLoadInitialPackages: EventHandler;
-  onDidActivateInitialPackages: EventHandler;
-  onDidActivatePackage(callback: (activatedPackage: Package) => void): Disposable;
-  onDidDeactivatePackage(callback: (deactivatedPackage: Package) => void): Disposable;
-  onDidLoadPackage(callback: (loadedPackage: Package) => void): Disposable;
-  onDidUnloadPackage(callback: (unloadedPackage: Package) => void): Disposable;
+  onDidLoadInitialPackages: EventKit.EventHandler;
+  onDidActivateInitialPackages: EventKit.EventHandler;
+  onDidActivatePackage(callback: (activatedPackage: Package) => void): EventKit.Disposable;
+  onDidDeactivatePackage(callback: (deactivatedPackage: Package) => void): EventKit.Disposable;
+  onDidLoadPackage(callback: (loadedPackage: Package) => void): EventKit.Disposable;
+  onDidUnloadPackage(callback: (unloadedPackage: Package) => void): EventKit.Disposable;
   getApmPath(): string;
   getPackageDirPaths(): string[];
   resolvePackagePath(name: string): string;
