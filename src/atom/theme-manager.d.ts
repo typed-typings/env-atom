@@ -1,7 +1,7 @@
-import EventHandler = require('../event-kit/event-handler');
+import EventKit = require('event-kit');
 
 declare class ThemeManager {
-  onDidChangeActiveThemes: EventHandler;
+  onDidChangeActiveThemes: EventKit.EventHandler;
   getLoadedThemeNames(): string[];
   getLoadedThemes(): any[];
   getActiveThemeNames(): string[];

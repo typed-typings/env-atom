@@ -1,8 +1,8 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 declare class ViewRegistry {
-  addViewProvider(createView: () => HTMLElement): Disposable;
-  addViewProvider(modelConstructor: Function, createView: () => HTMLElement): Disposable;
+  addViewProvider(createView: () => HTMLElement): EventKit.Disposable;
+  addViewProvider(modelConstructor: Function, createView: () => HTMLElement): EventKit.Disposable;
   getView(object: Object): any; // DOM element
 }
 

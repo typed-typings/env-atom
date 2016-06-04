@@ -1,11 +1,6 @@
-import Disposable = require('../event-kit/disposable');
-import TextBuffer = require('../text-buffer/text-buffer');
-import Point = require('../text-buffer/point');
-import Range = require('../text-buffer/range');
-import MarkerLayer = require('../text-buffer/marker-layer');
-import ScanFunction = require('../text-buffer/scan-function');
-import ScanInRangeFunction = require('../text-buffer/scan-in-range-function');
-import Grammar = require('../first-mate/grammar');
+import EventKit = require('event-kit');
+import TextBuffer = require('text-buffer');
+import FirstMate = require('first-mate');
 
 import Cursor = require('./cursor');
 import Decoration = require('./decoration');
@@ -16,42 +11,41 @@ import ScopeDescriptor = require('./scope-descriptor');
 
 import CursorChangeEventHandler = require('./cursor-change-event-handler');
 import SelectionChangeEventHandler = require('./selection-change-event-handler');
-import GrammarEventHandler = require('../first-mate/grammar-event-handler');
 import ClipScreenPositionOption = require('./clip-screen-position-option');
 
 declare class TextEditor {
-  onDidChangeTitle: (callback: () => void) => Disposable;
-  onDidChangePath: (callback: () => void) => Disposable;
-  onDidChange: (callback: () => void) => Disposable;
-  onDidStopChanging: (callback: () => void) => Disposable;
+  onDidChangeTitle: (callback: () => void) => EventKit.Disposable;
+  onDidChangePath: (callback: () => void) => EventKit.Disposable;
+  onDidChange: (callback: () => void) => EventKit.Disposable;
+  onDidStopChanging: (callback: () => void) => EventKit.Disposable;
   onDidChangeCursorPosition: CursorChangeEventHandler;
   onDidChangeSelectionRange: SelectionChangeEventHandler;
-  onDidSave(callback: (event: { path: string }) => void): Disposable;
-  onDidDestroy: (callback: () => void) => Disposable;
+  onDidSave(callback: (event: { path: string }) => void): EventKit.Disposable;
+  onDidDestroy: (callback: () => void) => EventKit.Disposable;
   getBuffer(): TextBuffer;
-  observeGutters(callback: (gutter: Gutter) => void): Disposable;
-  onDidAddGutter(callback: (gutter: Gutter) => void): Disposable;
-  onDidRemoveGutter(callback: (name: string) => void): Disposable;
+  observeGutters(callback: (gutter: Gutter) => void): EventKit.Disposable;
+  onDidAddGutter(callback: (gutter: Gutter) => void): EventKit.Disposable;
+  onDidRemoveGutter(callback: (name: string) => void): EventKit.Disposable;
 
   // Extended Methods
-  onDidChangeSoftWrapped: (callback: () => void) => Disposable;
-  onDidChangeEncoding: (callback: () => void) => Disposable;
-  observeGrammar: GrammarEventHandler;
-  onDidChangeGrammar: GrammarEventHandler;
-  onDidChangeModified: (callback: () => void) => Disposable;
-  onDidConflict: (callback: () => void) => Disposable;
-  onWillInsertText(callback: (event: { text: string, cancel(): void }) => void): Disposable;
-  onDidInsertText(callback: (event: { text: string }) => void): Disposable;
-  observeCursors(callback: (cursor: Cursor) => void): Disposable;
-  onDidAddCursor(callback: (cursor: Cursor) => void): Disposable;
-  onDidRemoveCursor(callback: (cursor: Cursor) => void): Disposable;
-  observeSelections(callback: (selection: Selection) => void): Disposable;
-  onDidAddSelection(callback: (selection: Selection) => void): Disposable;
-  onDidRemoveSelection(callback: (selection: Selection) => void): Disposable;
-  observeDecorations(callback: (decoration: Decoration) => void): Disposable;
-  onDidAddDecoration(callback: (decoration: Decoration) => void): Disposable;
-  onDidRemoveDecoration(callback: (decoration: Decoration) => void): Disposable;
-  onDidChangePlaceholderText(callback: (placeholderText: string) => void): Disposable;
+  onDidChangeSoftWrapped: (callback: () => void) => EventKit.Disposable;
+  onDidChangeEncoding: (callback: () => void) => EventKit.Disposable;
+  observeGrammar: FirstMate.GrammarEventHandler;
+  onDidChangeGrammar: FirstMate.GrammarEventHandler;
+  onDidChangeModified: (callback: () => void) => EventKit.Disposable;
+  onDidConflict: (callback: () => void) => EventKit.Disposable;
+  onWillInsertText(callback: (event: { text: string, cancel(): void }) => void): EventKit.Disposable;
+  onDidInsertText(callback: (event: { text: string }) => void): EventKit.Disposable;
+  observeCursors(callback: (cursor: Cursor) => void): EventKit.Disposable;
+  onDidAddCursor(callback: (cursor: Cursor) => void): EventKit.Disposable;
+  onDidRemoveCursor(callback: (cursor: Cursor) => void): EventKit.Disposable;
+  observeSelections(callback: (selection: Selection) => void): EventKit.Disposable;
+  onDidAddSelection(callback: (selection: Selection) => void): EventKit.Disposable;
+  onDidRemoveSelection(callback: (selection: Selection) => void): EventKit.Disposable;
+  observeDecorations(callback: (decoration: Decoration) => void): EventKit.Disposable;
+  onDidAddDecoration(callback: (decoration: Decoration) => void): EventKit.Disposable;
+  onDidRemoveDecoration(callback: (decoration: Decoration) => void): EventKit.Disposable;
+  onDidChangePlaceholderText(callback: (placeholderText: string) => void): EventKit.Disposable;
 
   // File Details
   getTitle(): string;
@@ -70,21 +64,21 @@ declare class TextEditor {
 
   // Reading Text
   getText(): string;
-  getTextInBufferRange(range: Range): string;
+  getTextInBufferRange(range: TextBuffer.Range): string;
   getLineCount(): number;
   getScreenLineCount(): number;
   getLastBufferRow(): number;
   getLastScreenRow(): number;
   lineTextForBufferRow(bufferRow: number): string;
   lineTextForScreenRow(screenRow: number): string;
-  getCurrentParagraphBufferRange(): Range;
+  getCurrentParagraphBufferRange(): TextBuffer.Range;
 
   // Mutating Text
   setText(text: string): void
-  setTextInBufferRange(range: Range, text: string, options?: {
+  setTextInBufferRange(range: TextBuffer.Range, text: string, options?: {
     normalizeLineEndings?: boolean,
     undo?: 'skip'
-  }): Range;
+  }): TextBuffer.Range;
   insertText(text: string, options?: {
     select: boolean;
     autoIndent: boolean;
@@ -92,7 +86,7 @@ declare class TextEditor {
     autoDecreaseIndent: boolean;
     normalizeLineEndings?: boolean;
     undo: 'skip'
-  }): Range | boolean;
+  }): TextBuffer.Range | boolean;
   insertNewline(): void;
   delete(): void;
   backspace(): void;
@@ -128,16 +122,16 @@ declare class TextEditor {
   groupChangesSinceCheckpoint(): boolean;
 
   // TextEditor Coordinates
-  screenPositionForBufferPosition(bufferPosition: Point | number[], options?: ClipScreenPositionOption): Point;
-  bufferPositionForScreenPosition(bufferPosition: Point | number[], options?: ClipScreenPositionOption): Point;
-  screenRangeForBufferRange(bufferRange: Range): Range;
-  bufferRangeForScreenRange(screenRange: Range): Range;
+  screenPositionForBufferPosition(bufferPosition: TextBuffer.Point | number[], options?: ClipScreenPositionOption): TextBuffer.Point;
+  bufferPositionForScreenPosition(bufferPosition: TextBuffer.Point | number[], options?: ClipScreenPositionOption): TextBuffer.Point;
+  screenRangeForBufferRange(bufferRange: TextBuffer.Range): TextBuffer.Range;
+  bufferRangeForScreenRange(screenRange: TextBuffer.Range): TextBuffer.Range;
 
   // Extended Methods
-  clipBufferPosition(bufferPosition: Point): Point;
-  clipBufferRange(range: Range): Range;
-  clipScreenPosition(screenPosition: Point, options?: ClipScreenPositionOption): Point;
-  clipScreenRange(range: Range, options?: ClipScreenPositionOption): Range;
+  clipBufferPosition(bufferPosition: TextBuffer.Point): TextBuffer.Point;
+  clipBufferRange(range: TextBuffer.Range): TextBuffer.Range;
+  clipScreenPosition(screenPosition: TextBuffer.Point, options?: ClipScreenPositionOption): TextBuffer.Point;
+  clipScreenRange(range: TextBuffer.Range, options?: ClipScreenPositionOption): TextBuffer.Range;
 
   // Decorations
   decorateMarker(marker: TextEditorMarker, decorationParams: {
@@ -149,7 +143,7 @@ declare class TextEditor {
     onlyNonEmpty?: boolean,
     position?: 'head' | 'tail' | 'before' | 'after'
   }): Decoration;
-  decorateMarkerLayer(markerLayer: TextEditorMarkerLayer | MarkerLayer, decorationParams: {
+  decorateMarkerLayer(markerLayer: TextEditorMarkerLayer | TextBuffer.MarkerLayer, decorationParams: {
     type: 'line' | 'line-number' | 'highlight' | 'block',
     class: string,
     item?: HTMLElement | Object,
@@ -167,24 +161,24 @@ declare class TextEditor {
   getOverlayDecorations(propertyFilter?: Object): Decoration[];
 
   // Markers
-  markBufferRange(range: Range | Point[], properties: {
+  markBufferRange(range: TextBuffer.Range | TextBuffer.Point[], properties: {
     maintainHistory?: boolean,
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
-  markScreenRange(range: Range, properties: {
+  markScreenRange(range: TextBuffer.Range, properties: {
     maintainHistory?: boolean,
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
-  markBufferPosition(position: Point | number[], options?: {
+  markBufferPosition(position: TextBuffer.Point | number[], options?: {
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
   }): TextEditorMarker;
-  markScreenPosition(position: Point | number[], options?: {
+  markScreenPosition(position: TextBuffer.Point | number[], options?: {
     reversed?: boolean,
     persistent?: boolean,
     invalidate?: 'never' | 'surround' | 'overlap' | 'inside' | 'touch'
@@ -192,8 +186,8 @@ declare class TextEditor {
   findMarkers(properties: {
     startBufferRow: number,
     endBufferRow: number,
-    containsBufferRange: Range | Point[],
-    containsBufferPosition: Point | number[]
+    containsBufferRange: TextBuffer.Range | TextBuffer.Point[],
+    containsBufferPosition: TextBuffer.Point | number[]
   }): TextEditorMarker[];
   getMarkerLayer(id: any): TextEditorMarkerLayer;
   getDefaultMarkerLayer(): TextEditorMarkerLayer;
@@ -205,15 +199,15 @@ declare class TextEditor {
   addMarkerLayer(options: { maintainHistory?: boolean }): TextEditorMarkerLayer;
 
   // Cursors
-  getCursorBufferPosition(): Point;
-  getCursorBufferPositions(): Point[];
-  setCursorBufferPosition(position: Point | number[], options?: { autoscroll?: boolean }): void
-  getCursorAtScreenPosition(position: Point | number[]): Cursor;
-  getCursorScreenPosition(): Point;
-  getCursorScreenPositions(): Point[];
-  setCursorScreenPosition(position: Point | number[], options?: { autoscroll?: boolean }): void;
-  addCursorAtBufferPosition(bufferPosition: Point): Cursor;
-  addCursorAtScreenPosition(screenPosition: Point): Cursor;
+  getCursorBufferPosition(): TextBuffer.Point;
+  getCursorBufferPositions(): TextBuffer.Point[];
+  setCursorBufferPosition(position: TextBuffer.Point | number[], options?: { autoscroll?: boolean }): void
+  getCursorAtScreenPosition(position: TextBuffer.Point | number[]): Cursor;
+  getCursorScreenPosition(): TextBuffer.Point;
+  getCursorScreenPositions(): TextBuffer.Point[];
+  setCursorScreenPosition(position: TextBuffer.Point | number[], options?: { autoscroll?: boolean }): void;
+  addCursorAtBufferPosition(bufferPosition: TextBuffer.Point): Cursor;
+  addCursorAtScreenPosition(screenPosition: TextBuffer.Point): Cursor;
   hasMultipleCursors(): boolean;
   moveUp(lineCount?: number): void;
   moveDown(lineCount?: number): void;
@@ -244,24 +238,24 @@ declare class TextEditor {
 
   // Selections
   getSelectedText(): string;
-  getSelectedBufferRange(): Range;
-  getSelectedBufferRanges(): Range[];
-  setSelectedBufferRange(bufferRange: Range | Point[], options?: {
+  getSelectedBufferRange(): TextBuffer.Range;
+  getSelectedBufferRanges(): TextBuffer.Range[];
+  setSelectedBufferRange(bufferRange: TextBuffer.Range | TextBuffer.Point[], options?: {
     reversed: boolean,
     preserveFolds: boolean
   }): void;
-  setSelectedBufferRanges(bufferRanges: Range[] | Point[][], options?: {
+  setSelectedBufferRanges(bufferRanges: TextBuffer.Range[] | TextBuffer.Point[][], options?: {
     reversed: boolean,
     preserveFolds: boolean
   }): void;
-  getSelectedScreenRange(): Range;
-  getSelectedScreenRanges(): Range[];
-  setSelectedScreenRange(screenRange: Range | Point[], options?: { reversed: boolean }): void;
-  setSelectedScreenRanges(screenRangee: Range[] | Point[][], options?: { reversed: boolean }): void;
+  getSelectedScreenRange(): TextBuffer.Range;
+  getSelectedScreenRanges(): TextBuffer.Range[];
+  setSelectedScreenRange(screenRange: TextBuffer.Range | TextBuffer.Point[], options?: { reversed: boolean }): void;
+  setSelectedScreenRanges(screenRangee: TextBuffer.Range[] | TextBuffer.Point[][], options?: { reversed: boolean }): void;
   addSelectionForBufferRange(bufferRange, options?: { reversed: boolean }): Selection;
   addSelectionForScreenRange(screenRange, options?: { reversed: boolean }): Selection;
-  selectToBufferPosition(position: Point): void;
-  selectToScreenPosition(position: Point): void;
+  selectToBufferPosition(position: TextBuffer.Point): void;
+  selectToScreenPosition(position: TextBuffer.Point): void;
   selectUp(rowCount: number): void;
   selectDown(rowCount: number): void;
   selectLeft(columnCount: number): void;
@@ -289,12 +283,12 @@ declare class TextEditor {
   getLastSelection(): Selection;
   getSelections(): Selection[];
   getSelectionsOrderedByBufferPosition(): Selection[];
-  selectionIntersectsBufferRange(bufferRange: Range | Point[]): boolean;
+  selectionIntersectsBufferRange(bufferRange: TextBuffer.Range | TextBuffer.Point[]): boolean;
 
   // Searching and Replacing
-  scan: ScanFunction;
-  scanInBufferRange: ScanInRangeFunction;
-  backwardsScanInBufferRange: ScanInRangeFunction;
+  scan: TextBuffer.ScanFunction;
+  scanInBufferRange: TextBuffer.ScanInRangeFunction;
+  backwardsScanInBufferRange: TextBuffer.ScanInRangeFunction;
 
   // Tab Behavior
   getSoftTabs(): boolean;
@@ -324,15 +318,15 @@ declare class TextEditor {
   autoIndentSelectedRows(): void;
 
   // Grammars
-  getGrammar(): Grammar;
-  setGrammar(grammar: Grammar): void;
+  getGrammar(): FirstMate.Grammar;
+  setGrammar(grammar: FirstMate.Grammar): void;
 
   // Managing Syntax Scopes
   getRootScopeDescriptor(): ScopeDescriptor;
-  scopeDescriptorForBufferPosition(bufferPosition: Point | number[]): ScopeDescriptor;
+  scopeDescriptorForBufferPosition(bufferPosition: TextBuffer.Point | number[]): ScopeDescriptor;
 
   // Extended Methods
-  bufferRangeForScopeAtCursor(scopeSelector: string): Range;
+  bufferRangeForScopeAtCursor(scopeSelector: string): TextBuffer.Range;
   isBufferRowCommented(): boolean;
 
   // Clipboard Operations
@@ -374,8 +368,8 @@ declare class TextEditor {
 
   // Scrolling the TextEditor
   scrollToCursorPosition(options?: { center?: boolean }): void;
-  scrollToBufferPosition(bufferPosition: Point | number[] | { row: number, column: number }, options?: { center?: boolean }): void;
-  scrollToScreenPosition(screenPosition: Point | number[] | { row: number, column: number }, options?: { center?: boolean }): void;
+  scrollToBufferPosition(bufferPosition: TextBuffer.Point | number[] | { row: number, column: number }, options?: { center?: boolean }): void;
+  scrollToScreenPosition(screenPosition: TextBuffer.Point | number[] | { row: number, column: number }, options?: { center?: boolean }): void;
 
   // TextEditor Rendering
   getPlaceholderText(): string

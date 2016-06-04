@@ -1,4 +1,4 @@
-import Disposable = require('../event-kit/disposable');
+import EventKit = require('event-kit');
 
 // Available in lib.d.ts?
 declare interface JSTooltipOption {
@@ -21,7 +21,7 @@ declare interface TooltipOption extends JSTooltipOption {
 
 
 declare class TooltipManager {
-  add(target: HTMLElement, options: TooltipOption): Disposable;
+  add(target: HTMLElement, options: TooltipOption): EventKit.Disposable;
 }
 
 export = TooltipManager;
