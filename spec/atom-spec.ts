@@ -16,7 +16,7 @@ describe('atom module', () => {
     expect(atom.Disposable).toBeDefined();
     expect(atom.CompositeDisposable).toBeDefined();
     expect(atom.Task).toBeDefined();
-    expect(atom.TextEditor).toBeDefined();
-    // let Point: atom.Point = new atom.Point();
+    expect(atom.TextBuffer).toBeDefined();
+    // let Point: atom.Point = new atom.Point(0, 0);
   });
 })

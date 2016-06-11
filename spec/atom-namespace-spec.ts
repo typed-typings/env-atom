@@ -138,4 +138,3 @@ describe('atom namespace', () => {
     // expect(atom.isDestroyed).toBeDefined();
   });
 });
-
