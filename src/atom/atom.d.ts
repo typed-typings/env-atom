@@ -1,14 +1,13 @@
 // some imported modules names are prefixed with '_' to avoid conflicts with local declarations.
 import EventKit = require('event-kit');
-import PathWatcher = require('pathwatcher');
 import KeymapManager = require('atom-keymap');
 import FirstMate = require('first-mate');
-import _TextBuffer = require('text-buffer');
+import TextBuffer = require('text-buffer');
 
-import _BufferedProcess = require('./buffer-process');
-import _BufferedNodeProcess = require('./buffer-node-process');
-import _GitRepository = require('./git-repository');
-import _Notification = require('./notification');
+import BufferedProcess = require('./buffer-process');
+import BufferedNodeProcess = require('./buffer-node-process');
+import GitRepository = require('./git-repository');
+import Notification = require('./notification');
 
 import CommandRegistry = require('./command-registry');
 import Config = require('./config');
@@ -24,23 +23,19 @@ import StyleManager = require('./style-manager');
 import DeserializerManager = require('./deserializer-manager');
 import ViewRegistry = require('./view-registry');
 import Workspace = require('./workspace');
-import _Task = require('./task');
-import _TextEditor = require('./text-editor');
+import Task = require('./task');
+import TextEditor = require('./text-editor');
 
-export var BufferedNodeProcess: _BufferedNodeProcess;
-export var BufferedProcess: _BufferedProcess;
-export var GitRepository: _GitRepository;
-export var Notification: _Notification;
-export var TextBuffer: _TextBuffer;
-export var Point: _TextBuffer.Point;
-export var Range: Range;
-export var File: File;
-export var Directory: PathWatcher.Directory;
-export var Emitter: EventKit.Emitter;
-export var Disposable: EventKit.Disposable;
-export var CompositeDisposable: EventKit.CompositeDisposable;
-export var Task: _Task;
-export var TextEditor: _TextEditor;
+export {BufferedNodeProcess};
+export {BufferedProcess};
+export {GitRepository};
+export {Notification};
+export {TextBuffer};
+export {Point, Range} from 'text-buffer'
+export {File, Directory} from 'pathwatcher'
+export {Emitter, Disposable, CompositeDisposable} from 'event-kit'
+export {Task};
+export {TextEditor};
 
 
 declare global {
