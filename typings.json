@@ -1,6 +1,6 @@
 {
   "name": "atom",
-  "main": "dist/atom/atom.d.ts",
+  "main": "dist/atom.d.ts",
   "homepage": "https://github.com/atom/atom",
   "global": true,
   "devDependencies": {},
