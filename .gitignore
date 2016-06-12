@@ -42,7 +42,6 @@ typings
 
 # output folder
 out
-dist
 
 # project
 spec/*.js
