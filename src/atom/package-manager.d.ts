@@ -24,6 +24,10 @@ declare class PackageManager {
   getAvailablePackagePaths(): string[];
   getAvailablePackageNames(): string[];
   getAvailablePackageMetadata(): string[];
+  activatePackages(): PromiseLike<Package[]>;
+  activatePackage(name: string): PromiseLike<Package>;
+  deactivatePackage(name: string): Package;
+  deactivatePackages(): void;
 }
 
 export = PackageManager;
