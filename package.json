@@ -7,9 +7,9 @@
     "watch": "onchange -w 's**/*.ts' -i -- npm run build+test"
   },
   "devDependencies": {
-    "onchange": "^2.5.0",
-    "tslint": "^3.10.2",
-    "tslint-config-typings": "^0.2.3",
-    "typings": "^1.0.4"
+    "onchange": "^3.2.1",
+    "tslint": "^5.2.0",
+    "tslint-config-typings": "^0.3.1",
+    "typings": "^2.1.1"
   }
 }
